@@ -204,10 +204,8 @@
     <ClCompile Include="framework\EliteWindow\SDLWindow\SDLWindow.cpp" />
     <ClCompile Include="framework\EliteRendering\SDLIntegration\SDLHelpers\gl3w.c" />
     <ClCompile Include="framework\main.cpp" />
+    <ClCompile Include="projects\MachineLearning\Population.cpp" />
     <ClCompile Include="projects\DecisionMaking\BehaviorTrees\App_AgarioGame_BT.cpp" />
-    <ClCompile Include="projects\DecisionMaking\FiniteStateMachines\App_AgarioGame.cpp" />
-    <ClCompile Include="projects\DecisionMaking\FiniteStateMachines\StatesAndTransitions.cpp" />
-    <ClCompile Include="projects\DecisionMaking\InfluenceMaps\App_InfluenceMap.cpp" />
     <ClCompile Include="projects\MachineLearning\App_MachineLearning.cpp" />
     <ClCompile Include="projects\MachineLearning\DynamicQLearning.cpp" />
     <ClCompile Include="projects\MachineLearning\Food.cpp" />
@@ -228,9 +226,6 @@
     <ClCompile Include="projects\Movement\SteeringBehaviors\SteeringAgent.cpp" />
     <ClCompile Include="projects\Movement\SteeringBehaviors\Steering\SteeringBehaviors.cpp" />
     <ClCompile Include="projects\Movement\Pathfinding\PathfindingAStar\App_PathfindingAStar.cpp" />
-    <ClCompile Include="projects\Shared\Agario\AgarioAgent.cpp" />
-    <ClCompile Include="projects\Shared\Agario\AgarioContactListener.cpp" />
-    <ClCompile Include="projects\Shared\Agario\AgarioFood.cpp" />
     <ClCompile Include="projects\Shared\BaseAgent.cpp" />
     <ClCompile Include="projects\Shared\NavigationColliderElement.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -263,6 +258,7 @@
     <ClInclude Include="framework\EliteAI\EliteNavigation\Algorithms\EPathSmoothing.h" />
     <ClInclude Include="framework\EliteAI\EliteNavigation\EHeuristicFunctions.h" />
     <ClInclude Include="framework\EliteAI\EliteNavigation\ENavigation.h" />
+    <ClInclude Include="projects\MachineLearning\Population.h" />
     <ClInclude Include="projects\App_MachineLearning\DirectedGraph.h" />
     <ClInclude Include="framework\EliteMath\FMatrix.h" />
     <ClInclude Include="framework\EliteHelpers\ESingleton.h" />
@@ -308,9 +304,6 @@
     <ClInclude Include="framework\EliteInterfaces\EIApp.h" />
     <ClInclude Include="projects\DecisionMaking\BehaviorTrees\App_AgarioGame_BT.h" />
     <ClInclude Include="projects\DecisionMaking\BehaviorTrees\Behaviors.h" />
-    <ClInclude Include="projects\DecisionMaking\FiniteStateMachines\App_AgarioGame.h" />
-    <ClInclude Include="projects\DecisionMaking\FiniteStateMachines\StatesAndTransitions.h" />
-    <ClInclude Include="projects\DecisionMaking\InfluenceMaps\App_InfluenceMap.h" />
     <ClInclude Include="projects\MachineLearning\App_MachineLearning.h" />
     <ClInclude Include="projects\MachineLearning\DynamicQLearning.h" />
     <ClInclude Include="projects\MachineLearning\Food.h" />
@@ -325,10 +318,6 @@
     <ClInclude Include="projects\Movement\SteeringBehaviors\Flocking\TheFlock.h" />
     <ClInclude Include="projects\Movement\SteeringBehaviors\SpacePartitioning\SpacePartitioning.h" />
     <ClInclude Include="projects\Movement\Pathfinding\PathfindingAStar\App_PathfindingAStar.h" />
-    <ClInclude Include="projects\Shared\Agario\AgarioAgent.h" />
-    <ClInclude Include="projects\Shared\Agario\AgarioContactListener.h" />
-    <ClInclude Include="projects\Shared\Agario\AgarioData.h" />
-    <ClInclude Include="projects\Shared\Agario\AgarioFood.h" />
     <ClInclude Include="projects\Shared\NavigationColliderElement.h" />
     <ClInclude Include="projects\Movement\Sandbox\App_Sandbox.h" />
     <ClInclude Include="projects\Movement\Sandbox\SandboxAgent.h" />

@@ -18,8 +18,8 @@ private:
 	Vector2 m_Location;
 	Color m_Color;
 	bool m_IsEaten = false;
-	int m_RespawnCounter{ 1000 };
-	int m_Respawn{ 2500 };
+	int m_RespawnCounter{ 15000 };
+	int m_Respawn{ 15000 };
 
 };
 #endif

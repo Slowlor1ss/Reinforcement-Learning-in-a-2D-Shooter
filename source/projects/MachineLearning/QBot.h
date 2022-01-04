@@ -7,7 +7,7 @@
 #include "projects/Shared/BaseAgent.h"
 #include "projects/Shared/NavigationColliderElement.h"
 
-class QBot : public BaseAgent
+class QBot final : public BaseAgent
 {
 public:
 	QBot(float x,
@@ -26,20 +26,29 @@ public:
 	virtual void Update(vector<Food*>& food, float deltaTime);
 	void Render(float deltaTime) override;
 	
-	bool IsAlive();
+	bool IsAlive() const;
 	void Reset();
 	float CalculateFitness() const;
 	//void MutateMatrix(Generation* gen, Elite::FMatrix& matrix, float mutationRate, float mutationAmplitude);
-	void Reinforcement(float factor, int memory);
-	float CalculateInverseDistance(float realDist);
+	void Reinforcement(float factor, int memory) const;
+	float CalculateInverseDistance(float realDist) const;
 
+	FMatrix* GetBotBrain() { return &m_BotBrain; }
+	float GetAge() const { return m_Age; }
+
+	void SetBotBrain(const FMatrix& brain) { m_BotBrain.Set(brain); }
 	void SetObstacles(const std::vector<NavigationColliderElement*>& obstacles)
 	{
 		m_vNavigationColliders = obstacles;
 	}
 
+	bool operator<(const QBot& other) const
+	{
+		return CalculateFitness() < other.CalculateFitness();
+	}
+
 private:
-	std::vector<NavigationColliderElement*> m_vNavigationColliders = {nullptr};
+	std::vector<NavigationColliderElement*> m_vNavigationColliders;
 	float m_Radius;
 
 	Elite::Vector2 m_Location; //TODO: maybe remove location and use get position
@@ -79,12 +88,12 @@ private:
 	Elite::FMatrix m_SAngle;
 
 	// Q-factors, enable usage for different learning parameters for positive or for negative reinforcement.
-	float m_NegativeQBig{ -0.8f };
-	float m_NegativeQ{ -0.4f };
-	float m_NegativeQSmall{ -0.1f };
-	float m_PositiveQSmall{ 0.000001f };
+	float m_NegativeQBig{ -0.5f };
+	float m_NegativeQ{ -0.1f };
+	float m_NegativeQSmall{ -0.01f };
+	float m_PositiveQSmall{ 0.0001f };
 	float m_PositiveQ{ 0.1f };
-	float m_PositiveQBig{ 0.5f };
+	float m_PositiveQBig{ 1.0f };
 	int m_CameCloseCounter{ 0 };
 
 };

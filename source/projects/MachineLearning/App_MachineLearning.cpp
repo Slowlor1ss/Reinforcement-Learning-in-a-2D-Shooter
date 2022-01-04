@@ -25,24 +25,24 @@ void App_MachineLearning::Start()
 	//Initialization of your application. 
 	//----------- CAMERA ------------
 	DEBUGRENDERER2D->GetActiveCamera()->SetZoom(75.0f);
-	DEBUGRENDERER2D->GetActiveCamera()->SetCenter(Elite::Vector2(50, 50));
+	DEBUGRENDERER2D->GetActiveCamera()->SetCenter(Elite::Vector2(0, 0));
 
-	//Create Boundaries
-	const float blockSize{ 2.0f };
-	const float hBlockSize{ blockSize / 2.0f };
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-m_TrimWorldSize - hBlockSize, 0.f), blockSize, (m_TrimWorldSize + blockSize) * 2.0f));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(m_TrimWorldSize + hBlockSize, 0.f), blockSize, (m_TrimWorldSize + blockSize) * 2.0f));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(0.0f, m_TrimWorldSize + hBlockSize), m_TrimWorldSize * 2.0f, blockSize));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(0.0f, -m_TrimWorldSize - hBlockSize), m_TrimWorldSize * 2.0f, blockSize));
+	////Create Boundaries
+	//const float blockSize{ 5.0f };
+	//const float hBlockSize{ blockSize / 2.0f };
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-m_TrimWorldSize - hBlockSize, 0.f), blockSize, (m_TrimWorldSize + blockSize) * 2.0f));
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(m_TrimWorldSize + hBlockSize, 0.f), blockSize, (m_TrimWorldSize + blockSize) * 2.0f));
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(0.0f, m_TrimWorldSize + hBlockSize), m_TrimWorldSize * 2.0f, blockSize));
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(0.0f, -m_TrimWorldSize - hBlockSize), m_TrimWorldSize * 2.0f, blockSize));
 
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f	+ (36 / 2.f), -50.0f + (6 / 2.f)), 36, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f	+ (76 / 2.f), -28.0f + (6 / 2.f)), 76, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(18.0f	+ (36 / 2.f), -28.0f + (6 / 2.f)), 36, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f	+ (36 / 2.f), -6.0f + (6 / 2.f)), 36, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-35.0f	+ (36 / 2.f), 15.0f + (6 / 2.f)), 36, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(34.0f	+ (36 / 2.f), 15.0f + (6 / 2.f)), 36, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f	+ (84 / 2.f), 43.0f + (6 / 2.f)), 84, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(34.0f	+ (36 / 2.f), 43.0f + (6 / 2.f)), 36, 6));
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f	+ (36 / 2.f), -50.0f + (6 / 2.f)), 36, 6));
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f	+ (76 / 2.f), -28.0f + (6 / 2.f)), 76, 6));
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(18.0f	+ (36 / 2.f), -28.0f + (6 / 2.f)), 36, 6));
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f	+ (36 / 2.f), -6.0f + (6 / 2.f)), 36, 6));
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-35.0f	+ (36 / 2.f), 15.0f + (6 / 2.f)), 36, 6));
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(34.0f	+ (36 / 2.f), 15.0f + (6 / 2.f)), 36, 6));
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f	+ (84 / 2.f), 43.0f + (6 / 2.f)), 84, 6));
+	//m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(34.0f	+ (36 / 2.f), 43.0f + (6 / 2.f)), 36, 6));
 
 	// points_list = [(0, 1), (1, 5), (5, 6), (5, 4), (1, 2), (2, 3), (2, 7)]
 	//m_pGraph = new QLearning(8,0,7);
@@ -77,11 +77,12 @@ void App_MachineLearning::Start()
 	//m_pGraph->TrainEnvironment();
 	//m_pGraph->TrainWithEnvironment();
 
-	m_pDynamicQEnv = new DynamicQLearning(150, 100, 16*2, 5, true);
-	m_pDynamicQEnv->GetQBot()->SetObstacles(m_vNavigationColliders);
+	m_pDynamicQEnv = new DynamicQLearning(50, 100, 16*2, 11, true);
+	//m_pDynamicQEnv->GetQBot()->SetObstacles(m_vNavigationColliders);
+	//m_pDynamicQEnv->GetQBot2()->SetObstacles(m_vNavigationColliders);
 }
 
-void App_MachineLearning::Update(float deltaTime)
+void App_MachineLearning::Update(const float deltaTime)
 {
 	//Update that is being called after the physics simulation
 	//m_pCurrentGeneration->Update(deltaTime);
@@ -96,13 +97,13 @@ void App_MachineLearning::Update(float deltaTime)
 	m_pDynamicQEnv->Update(deltaTime);
 }
 
-void App_MachineLearning::Render(float deltaTime) const
+void App_MachineLearning::Render(const float deltaTime) const
 {
 	//DEBUGRENDERER2D->DrawSegment({ 0.0f, 0.0f }, { -30.0f, 80.0f }, Color(1.f, .5f, 0.f), -0.1f);
 	//DEBUGRENDERER2D->DrawString({ 10.0f, 10.0f }, "TestString", Color(1.f, .5f, 0.f), -0.1f);
 	//m_pCurrentGeneration->Render(deltaTime);
 	//m_pGraph->Render(deltaTime);
-	for (auto collider : m_vNavigationColliders)
+	for (const auto collider : m_vNavigationColliders)
 	{
 		collider->RenderElement();
 	}
