@@ -20,8 +20,11 @@ The aim of this reasearch paper is to see how well i can use RL to learn a bot b
 To do this I will split the task up in to two mayor tasks one being navigation, exploring the enviroment and item collection.
 And the second task being the combat aspect.
 
+<br>
+
 **More about reinforcement learning and genetic algorithms**
 ---
+
 
 
 [Back to top](#readme)
