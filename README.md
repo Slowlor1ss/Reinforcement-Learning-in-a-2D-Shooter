@@ -4,8 +4,9 @@
 
 **Introduction**
 ---
-While it has been done before, there has been little research in the application of<br>
-reinforcement learning (RL) to modern computer games. More often reasearched using RL goes to robotics and multi-agent systems (MAS).<br>
+While it has been done before, there has been less research in the application of reinforcement learning (RL) to <br>
+modern computer games, besides from games like Doom, Minecraft, StarCraft, Tetris, and car racing games.<br>
+More often reasearched using RL goes to robotics and multi-agent systems (MAS).<br>
 Shooter games have some common features to these fields such as agents having the ability to sense and act to their<br>
 surroundigs, and complex continuous movements.<br>
 Therefore I found the affects of RL in an 2D Shooter enviroment and interesting area to research.<br>
