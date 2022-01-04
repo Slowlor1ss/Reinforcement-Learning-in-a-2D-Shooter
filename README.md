@@ -26,6 +26,6 @@ And the second task being the combat aspect.
 **More about reinforcement learning and genetic algorithms**
 ---
 
-
+<br>
 
 [Back to top](#readme)
