@@ -4,7 +4,7 @@
 
 **Introduction**
 ---
-While it has been done before In this research project I, there has been little research in the application of
+While it has been done before, there has been little research in the application of
 reinforcement learning (RL) to modern computer games. More often reasearched using RL goes to robotics and multi-agent systems (MAS). 
 Shooter games have some common features to these fields such as agents having the ability to sense and act to their
 surroundigs, and complex continuous movements.
