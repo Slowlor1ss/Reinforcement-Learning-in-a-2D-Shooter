@@ -10,7 +10,7 @@ More often reasearched using RL goes to robotics and multi-agent systems (MAS).<
 Shooter games have some common features to these fields such as agents having the ability to sense and act to their<br>
 surroundings, and complex continuous movements.<br>
 Therefore, I found the affects of RL in an 2D Shooter enviroment an interesting area to research.<br>
-I will attempt to combine both RL and genetic algorithms (GA) and apply them to my 2D shootergame.<br>
+I will attempt to combine both RL and genetic algorithms (GA) and apply them to my 2D shooter game.<br>
 A bot artificial intelligence (AI) generally consists of pathfinding, picking up and using items within<br>
 the enviroment and different styles of combat.<br>
 Bot AI in commercial games generally uses rule-based systems like, state machines, behaviour trees, etc. These<br>
