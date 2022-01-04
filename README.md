@@ -1,5 +1,7 @@
 # 2D-Shooter-MachineLearning
+
 <br>
+
 **Introduction**
 ---
 While it has been done before In this research project I, there has been little research in the application of
