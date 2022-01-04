@@ -18,7 +18,7 @@ techniques are typically time consuming and require fine-tuning of parameters. R
 RL could be applied with different parameters and used to generate different bots.<br>
 <br>
 The aim of this reasearch paper is to see how well I can use RL to learn a bot basic AI behaviours.<br>
-To do this I will split the task up in to two mayor tasks one being navigation, exploring the enviroment and item collection.<br>
+To do this I will split the task up in to two major tasks; one being navigation, exploring the environment and item collection.<br>
 And the second task being the combat aspect.
 
 <br>
