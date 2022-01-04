@@ -8,7 +8,7 @@ While it has been done before, there has been less research in the application o
 modern computer games, besides from games like Doom, Minecraft, StarCraft, Tetris, and car racing games.<br>
 More often reasearched using RL goes to robotics and multi-agent systems (MAS).<br>
 Shooter games have some common features to these fields such as agents having the ability to sense and act to their<br>
-surroundigs, and complex continuous movements.<br>
+surroundings, and complex continuous movements.<br>
 Therefore I found the affects of RL in an 2D Shooter enviroment and interesting area to research.<br>
 I will attempt to combine both RL and genetic algorithms (GA) and apply them to my 2D shootergame.<br>
 A bot artificial intelligence (AI) generally consists of pathfinding, picking up and using items within<br>
