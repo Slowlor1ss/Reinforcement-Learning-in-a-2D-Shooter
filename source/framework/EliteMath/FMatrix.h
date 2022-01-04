@@ -10,13 +10,13 @@
 #include <random>
 namespace Elite 
 {
-	class FMatrix
+	class FMatrix final
 	{
 	private:
 		float* m_Data;
 		int m_Rows, m_Columns;
 		int m_Size;
-		int rcToIndex(int r, int c)
+		int rcToIndex(int r, int c) const
 		{
 			return c * m_Rows + r;
 		}
@@ -35,7 +35,7 @@ namespace Elite
 			m_Data = nullptr;
 		}
 
-		void Resize(int nrOfRows, int nrOfColumns)
+		void Resize(const int nrOfRows, const int nrOfColumns)
 		{
 			m_Rows = nrOfRows;
 			m_Columns = nrOfColumns;
@@ -43,9 +43,9 @@ namespace Elite
 			m_Data = new float[m_Size];
 		}
 
-		void Set(int row, int column, float value)
+		void Set(const int row, const int column, const float value) const
 		{
-			int index = rcToIndex(row, column);
+			const int index = rcToIndex(row, column);
 			if (index > -1 && index < m_Size) 
 			{
 				m_Data[index] = value;
@@ -55,14 +55,14 @@ namespace Elite
 				printf("Wrong index! [%d, %d]\n", row, column);
 			}
 		}
-		void SetAll(float value)
+		void SetAll(const float value) const
 		{
 			for (int i = 0; i < m_Size; ++i)
 			{
 				m_Data[i] = value;
 			}
 		}
-		void SetRowAll(int row, float value) 
+		void SetRowAll(const int row, const float value) const
 		{
 			for (int c = 0; c < m_Columns; ++c) 
 			{
@@ -70,9 +70,9 @@ namespace Elite
 			}
 		}
 
-		void Add(int row, int column, float toAdd)
+		void Add(const int row, const int column, const float toAdd) const
 		{
-			int index = rcToIndex(row, column);
+			const int index = rcToIndex(row, column);
 			if (index > -1 && index < m_Size) {
 				m_Data[index] += toAdd;
 			}
@@ -82,9 +82,9 @@ namespace Elite
 		}
 
 
-		float Get(int row, int column)
+		float Get(const int row, const int column) const
 		{
-			int index = rcToIndex(row, column);
+			const int index = rcToIndex(row, column);
 			if (index > -1 && index < m_Size) {
 				return m_Data[index];
 			}
@@ -93,7 +93,7 @@ namespace Elite
 			}
 		}
 
-		void Randomize(float min, float max)
+		void Randomize(const float min, const float max) const
 		{
 			for (int i = 0; i < m_Size; ++i)
 			{
@@ -102,18 +102,18 @@ namespace Elite
 			}
 		}
 
-		int GetNrOfRows() 
+		int GetNrOfRows() const
 		{
 			return m_Rows;
 		}
-		int GetNrOfColumns() 
+		int GetNrOfColumns() const
 		{
 			return m_Columns;
 		}
-		void MatrixMultiply(FMatrix& op2, FMatrix& result)
+		void MatrixMultiply(const FMatrix& op2, const FMatrix& result) const
 		{
-			int maxRows = min(GetNrOfRows(), result.GetNrOfRows());
-			int maxColumns = min(op2.GetNrOfColumns(), result.GetNrOfColumns());
+			const int maxRows = min(GetNrOfRows(), result.GetNrOfRows());
+			const int maxColumns = min(op2.GetNrOfColumns(), result.GetNrOfColumns());
 
 			for (int c_row = 0; c_row < maxRows; ++c_row)
 			{
@@ -128,7 +128,7 @@ namespace Elite
 				}
 			}
 		}
-		void ScalarMultiply(float scalar)
+		void ScalarMultiply(const float scalar) const
 		{
 			for (int i = 0; i < m_Size; ++i) 
 			{
@@ -136,20 +136,36 @@ namespace Elite
 			}
 		}
 
-		void Copy(FMatrix& other)
+		void Copy(const FMatrix& other) const
 		{
-			int maxRows = min(GetNrOfRows(), other.GetNrOfRows());
-			int maxColumns = min(GetNrOfColumns(), other.GetNrOfColumns());
+			const int maxRows = min(GetNrOfRows(), other.GetNrOfRows());
+			const int maxColumns = min(GetNrOfColumns(), other.GetNrOfColumns());
 
 			for (int c_row = 0; c_row < maxRows; ++c_row) {
 				for (int c_column = 0; c_column < maxColumns; ++c_column) {
-					float oVal = other.Get(c_row, c_column);
+					const float oVal = other.Get(c_row, c_column);
 					Set(c_row, c_column, oVal);
 				}
 			}
 		}
 
-		void Add(FMatrix& other)
+		void Set(const FMatrix& other) const
+		{
+			if (other.m_Size > m_Size)
+			{
+				printf("Different sizes!\n");
+				return;
+			}
+
+			for (int i = 0; i < m_Size; ++i)
+			{
+				//const float value = 0;//*other.m_Data;
+				//Set(0, i, *other.m_Data);
+				m_Data[i] = *other.m_Data;
+			}
+		}
+
+		void Add(const FMatrix& other) const
 		{
 			int maxRows = min(GetNrOfRows(), other.GetNrOfRows());
 			int maxColumns = min(GetNrOfColumns(), other.GetNrOfColumns());
@@ -163,7 +179,7 @@ namespace Elite
 			}
 		}
 
-		void Subtract(FMatrix& other)
+		void Subtract(const FMatrix& other) const
 		{
 			int maxRows = min(GetNrOfRows(), other.GetNrOfRows());
 			int maxColumns = min(GetNrOfColumns(), other.GetNrOfColumns());
@@ -178,7 +194,7 @@ namespace Elite
 				}
 			}
 		}
-		void Sigmoid()
+		void Sigmoid() const
 		{
 			for (int i = 0; i < m_Size; ++i)
 			{
@@ -187,7 +203,7 @@ namespace Elite
 			}
 		}
 
-		float Sum()
+		float Sum() const
 		{
 			float sum = 0;
 			for (int i = 0; i < m_Size; ++i)
@@ -196,7 +212,7 @@ namespace Elite
 			}
 			return sum;
 		}
-		float Dot(FMatrix& op2)
+		float Dot(const FMatrix& op2) const
 		{
 			int mR = min(GetNrOfRows(), op2.GetNrOfRows());
 			int mC = min(GetNrOfColumns(), op2.GetNrOfColumns());
@@ -211,7 +227,7 @@ namespace Elite
 			}
 			return dot;
 		}
-		float Max()
+		float Max() const
 		{
 			float max = -FLT_MAX;
 			for (int c_row = 0; c_row < m_Rows; ++c_row) {
@@ -225,12 +241,12 @@ namespace Elite
 			}
 			return max;
 		}
-		float Max(int& r, int& c)
+		float Max(int& r, int& c) const
 		{
 			float max = -FLT_MAX;
 			for (int c_row = 0; c_row < m_Rows; ++c_row) {
 				for (int c_column = 0; c_column < m_Columns; ++c_column) {
-					float value = Get(c_row, c_column);
+					const float value = Get(c_row, c_column);
 					if (value > max) {
 						max = value;
 						r = c_row;
@@ -241,7 +257,7 @@ namespace Elite
 			}
 			return max;
 		}
-		float MaxOfRow(int r)
+		float MaxOfRow(int r) const
 		{
 			float max = -FLT_MAX;
 			for (int c_column = 0; c_column < m_Columns; ++c_column) {
@@ -255,11 +271,11 @@ namespace Elite
 		}
 
 
-		void Print()
+		void Print() const
 		{
 			for (int c_row = 0; c_row < m_Rows; ++c_row) {
 				for (int c_column = 0; c_column < m_Columns; ++c_column) {
-					float value = Get(c_row, c_column);
+					const float value = Get(c_row, c_column);
 					printf("%.3f\t", value);
 				}
 				printf("\n");
