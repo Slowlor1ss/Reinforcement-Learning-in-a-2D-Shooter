@@ -210,7 +210,7 @@ within there's a total of 50 food spawnpoints and 8 obstacles within the map, th
 Figure 1 shows an image of the map.<br>
 
 <p>
-[Figure 1](map)
+[Figure 1](/source/media/map.png)
 </p>
 
 <br>
