@@ -209,30 +209,32 @@ The test environment is a square of 140 x 140 pixels. The map is surrounded by w
 within there's a total of 50 food spawnpoints and 8 obstacles within the map, the agent cannot move or look trough these walls.<br>
 Figure 1 shows an image of the map.<br>
 
-<p>
-[Figure 1](https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/Map.png?raw=true)
+<p align="center">
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/Map.png?raw=true" width=25% height=25%><br>
+<b>Figure 1. Map. Blue dots represent food objects, green squares represent obstacles.</b>
 </p>
 
 <br>
-The RL bot is equipped with 16 sensors for item seeking and another 16 looking at its surroundings, 
-The sensors range from 45 degrees to the left to 45 degrees to the right.
-The first 16 sensors were used to determine if the was food in the view of the bot.
-Then the distance to that food object is calculated and inverted, the inverted distance is saved
-in the memory matrix of our RL agent. 
-We save the inverted distance cause we only have one memory matrix and want the closest food to have the most impact
-this means that if our food is at the same position we are (distance = 0) our inverted distance = max view range,
-because of how matrix multiplication work this makes it easier while working with one memory matrix.
-Our second 16 sensors are used to determine if there are any obstacles in the agents vision,
-also for these objects we calculate the distance and then check how far this obstacle is,
-When the obstacle is far away from out agent we reward it with with a small reward of 0.0001.
-If an obstacle was close to our agent we give it a penalty of -0.1, and when theres no
-obstacle in our view then we reward it with 0.001.
-Our agent can accordingly to these parameters choose a direction between -pi and +pi.
-Figure 2 shows a agent with 16 rays, the blue dots represent food and the blue dots with green circles
-represent food within our view, and the green ray represnts the newly chosen direction.
-
-<p>
-[Figure 2](viewRange)
+The RL bot is equipped with 16 sensors for item seeking and another 16 looking at its surroundings, <br>
+The sensors range from 45 degrees to the left to 45 degrees to the right.<br>
+The first 16 sensors were used to determine if the was food in the view of the bot.<br>
+Then the distance to that food object is calculated and inverted, the inverted distance is saved<br>
+in the memory matrix of our RL agent. <br>
+We save the inverted distance cause we only have one memory matrix and want the closest food to have the most impact<br>
+this means that if our food is at the same position we are (distance = 0) our inverted distance = max view range,<br>
+because of how matrix multiplication work this makes it easier while working with one memory matrix.<br>
+Our second 16 sensors are used to determine if there are any obstacles in the agents vision,<br>
+also for these objects we calculate the distance and then check how far this obstacle is,<br>
+When the obstacle is far away from out agent we reward it with with a small reward of 0.0001.<br>
+If an obstacle was close to our agent we give it a penalty of -0.1, and when theres no<br>
+obstacle in our view then we reward it with 0.001.<br>
+Our agent can accordingly to these parameters choose a direction between -pi and +pi.<br>
+Figure 2 shows a agent with 16 rays, the blue dots represent food and the blue dots with green circles<br>
+represent food within our view, and the green ray represnts the newly chosen direction.<br>
+<br>
+<p align="center">
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/viewRange.png?raw=true" width=40% height=40%><br>
+<b>Figure 2. Agent with view rays.</b>
 </p>
 	
 <br>
