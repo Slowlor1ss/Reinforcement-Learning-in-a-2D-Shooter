@@ -37,6 +37,8 @@ handle due to lack of continuity, linearity, or other.<br>
 GA work by starting from an initial generation that is then evaluated trough a user defined function. From there subsequent generations<br>
 will be generated trough [***selection***](#selection), [***crossover***](#crossover), and [***mutation***](#mutation).<br>
 
+<br>
+
 > #### *Selection*
 Each part of the genetic algorithm has several different ways that it can be executed.<br>
 Selection will retain the best performing agents from one generation to the next.<br>
@@ -141,15 +143,32 @@ to crossover in order to produce superior offspring.<br>
 Also in crossover there are multiple methods you can apply to your algortihm<br>
 Some of the different types include:<br>
 <br>
-Single Point Crossover; Where one point on the parent organism is selected. <br>
+**Single Point Crossover**: Where one point on the parent organism is selected. <br>
 All data beyond that point in the organism is swapped between the two parent organisms.<br>
-(image)
+	
+<p>
+<img src="https://media.geeksforgeeks.org/wp-content/uploads/20190620121215/singleCrossover-2.png" width=50% height=50%>
+</p>
+	
 <br>
-Two-Point Crossover; This is a specific case of a N-point Crossover technique. 
-Two random points are chosen on the individual and the genetic material is exchanged at these points.
-(image)
 
+**Two-Point Crossover**: This is a specific case of a N-point Crossover technique. <br>
+Two random points are chosen on the individual and the genetic material is exchanged at these points.<br>
+	
+<p>
+<img src="https://media.geeksforgeeks.org/wp-content/uploads/20190620121313/twopointCrossover-2.png" width=50% height=50%>
+</p>
+	
+<br>
+	
+**Uniform Crossover**: Like tossing a coin.<br>
+Each bit is selected randomly from one of the corresponding genes of the parent chromosomes.<br>
+	
+<p>
+<img src="https://media.geeksforgeeks.org/wp-content/uploads/20190620121403/unifromCrossover-2.png" width=50% height=50%>
+</p>
 
+<br><br>	
 
 > #### *Mutation*
 
