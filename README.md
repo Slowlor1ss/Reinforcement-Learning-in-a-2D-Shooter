@@ -210,7 +210,7 @@ within there's a total of 50 food spawnpoints and 8 obstacles within the map, th
 Figure 1 shows an image of the map.<br>
 
 <p>
-[Figure 1](https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/main/source/Media/Map.png?raw=true)
+[Figure 1](https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/Map.png?raw=true)
 </p>
 
 <br>
