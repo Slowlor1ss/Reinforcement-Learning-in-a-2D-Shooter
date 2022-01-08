@@ -35,7 +35,7 @@ Today there are several RL algorithms including TD, Q-learning, and Saras. My AI
 GA is a type of optimization algorithm based on natural selection, Genetic algorithms is one branch of the larger class evolutionary algorithms (EA). They imitate the biological processes of reproduction and natural selection to solve for the ‘fittest’ solutions. Like in evolution, many of the processes involve randomness, however GA allows one to set the level of randomization and the level of control. They raquire no extra information about the given problem, this allows them to find solutions to problems that other optimization methods cannot<br>
 handle due to lack of continuity, linearity, or other.<br>
 GA work by starting from an initial generation that is then evaluated trough a user defined function. From there subsequent generations<br>
-will be generated trough ***selection***, ***crossover***, and ***mutation***.<br>
+will be generated trough [***selection***](#selection), [***crossover***](#crossover), and [***mutation***](#mutation).<br>
 
 > #### *Selection*
 Each part of the genetic algorithm has several different ways that it can be executed.<br>
