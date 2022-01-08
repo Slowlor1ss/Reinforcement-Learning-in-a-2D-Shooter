@@ -25,17 +25,19 @@ And the second task being the combat aspect.
 
 **More about reinforcement learning and genetic algorithms**
 ---
-#### Reinforcement Learning
+### Reinforcement Learning
 RL is a machine learning technique where an agent learns trough experience. The agents preforms an action within an environment, which is interpreted into a reward and a representation of the state, which are then criticized trough negative and positive rewards based on a reward function from within the program, to tell the agent how good its action was and how it should should adjust accordingly. 
 Today there are several RL algorithms including TD, Q-learning, and Saras. My AI is trained using Q-learning, The main purpose of all the algorithms is to find an optimal policy. The policy is a mapping between states and actions, it provides the path the agents should follow to maximize the reward function. This is simillar to processes that occur in nature; For example our brains are hard wired to interpret signals such as pain and hunger as negative renforcements, and pleasure and food as positive onces, and this is exactly how our RL agent works. When our agent eats it will be rewarded for taking that action, but when our agent suffers from hunger it will die and will be punished for its most resent actions which will include not eating.
 
-#### Genetic Algorithms
+### Genetic Algorithms
 GA is a type of optimization algorithm based on natural selection, Genetic algorithms is one branch of the larger class evolutionary algorithms (EA). They imitate the biological processes of reproduction and natural selection to solve for the ‘fittest’ solutions. Like in evolution, many of the processes involve randomness, however GA allows one to set the level of randomization and the level of control. They raquire no extra information about the given problem, this allows them to find solutions to problems that other optimization methods cannot handle due to lack of continuity, linearity, or other.
 GA work by starting from an initial generation that is then evaluated trough a user defined function. From there subsequent generations will be generated trough *selection*, *crossover*, and *mutation*.
-###### **Selection**
+
+#### **Selection**
 Each part of the genetic algorithm has several different ways that it can be executed.<br>
-For the selection part I tried the 3 following techniques.
-###### Fitness proportionate selection
+Selection will retain the best performing agents from one generation to the next.
+Herefore I tried the 3 following techniques.
+<details><summary><i> Fitness proportionate selection</i> (Click to open)</summary>
 
 <br>
 
@@ -60,7 +62,20 @@ Elite::FMatrix* Population::SelectParentFPS(const float sum) const
 	return nullptr;
 }
 ```
-###### Stochastic universal sampling
+</details>
+Fitness proportionate is the first type of selection that was introduced when genetic <br>
+algorithms were first being developed. It is also known as roulette wheel selection due to  <br>
+the similarity of selection it has with a physical roulette wheel.  <br>
+How it works is that for each element in the set it finds the sum  <br>
+from F<sub>0</sub> . . . F<sub>n</sub> and gives each element a chance  <br>
+to be selected with the individual fitness over the sum of the fitness.  <br>
+	
+<br>
+
+<details><summary><i>Stochastic universal sampling</i></summary>
+
+<br>
+	
 ```c++
 //Stochastic universal sampling
 void Population::SelectParentSUS() const
@@ -85,15 +100,37 @@ void Population::SelectParentSUS() const
 	}
 }
 ```
-###### Tournament selection
+</details>
+Stochastic Selection is based upon the fitness proportional selection type; 
+However, it is made to be fairer. It uses a single random value to get
+a sampling of all the agents by choosing them at evenly spaced intervals.
+	
+<br>
+	
+<details><summary><i>Tournament selection</i></summary>
+	
+<br>
+	
 ```c++
 //Tournament selection
 QBot* BestBot = *std::max_element(m_Bots.begin(), m_Bots.end());
 ```
+</details>
+Tournament selection is one of the simpler
+methods of selection. This type of selection simply works by determining which 
+of the agents has the best fitness, and chooses that one.
+	
+<br>
+	
+After implementing and testing each of the techniques, I decided to go with
+stochastic Selection as this one allowed enough variation while disallowing the fittest agents to saturate 
+from one generation to another. 
+	
+<br>
+	
+#### **Crossover**
 
-###### **Crossover**
-
-###### **Mutation**
+#### **Mutation**
 
 <br>
 
