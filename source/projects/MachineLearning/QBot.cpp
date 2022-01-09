@@ -16,7 +16,8 @@ QBot::QBot(float x,
 	bool useBias,
 	float radius) : BaseAgent(radius),
 	m_Location(x, y), m_StartLocation(x, y), m_FOV(fov), m_SFOV(sFov), m_Angle(angle),
-	m_AliveColor(randomFloat(), randomFloat(), randomFloat()),
+	//m_AliveColor(randomFloat(), randomFloat(), randomFloat()),
+	m_AliveColor(0, 0.6f, 0.4f),
 	m_DeadColor(.75f, 0.1f, .2f),
 	m_NrOfInputs(nrInputs),
 	m_NrOfOutputs(nrOutputs),
@@ -51,33 +52,14 @@ QBot::QBot(float x,
 	//m_BotBrain.Print();
 
 	SetPosition(m_Location);
-
-	//Create Boundaries
-	constexpr float blockSize{ 5.0f };
-	constexpr float hBlockSize{ blockSize / 2.0f };
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70 - hBlockSize, 0.f), blockSize, (70 + blockSize) * 2.0f));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(70 + hBlockSize, 0.f), blockSize, (70 + blockSize) * 2.0f));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(0.0f, 70 + hBlockSize), 70 * 2.0f, blockSize));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(0.0f, -70 - hBlockSize), 70 * 2.0f, blockSize));
-
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f + (36 / 2.f), -50.0f + (6 / 2.f)), 36, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f + (76 / 2.f), -28.0f + (6 / 2.f)), 76, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(18.0f + (36 / 2.f), -28.0f + (6 / 2.f)), 36, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f + (36 / 2.f), -6.0f + (6 / 2.f)), 36, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-35.0f + (36 / 2.f), 15.0f + (6 / 2.f)), 36, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(34.0f + (36 / 2.f), 15.0f + (6 / 2.f)), 36, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(-70.0f + (84 / 2.f), 43.0f + (6 / 2.f)), 84, 6));
-	m_vNavigationColliders.push_back(new NavigationColliderElement(Elite::Vector2(34.0f + (36 / 2.f), 43.0f + (6 / 2.f)), 36, 6));
 }
 
 QBot::~QBot() 
 {
 	delete[] m_ActionMatrixMemoryArr;
+	m_ActionMatrixMemoryArr = nullptr;
 	delete[] m_StateMatrixMemoryArr;
-
-	for (auto pNC : m_vNavigationColliders)
-		SAFE_DELETE(pNC);
-	m_vNavigationColliders.clear();
+	m_StateMatrixMemoryArr = nullptr;
 }
 
 void QBot::Update(vector<Food*>& foodList, float deltaTime)
@@ -145,6 +127,7 @@ void QBot::Update(vector<Food*>& foodList, float deltaTime)
 	}
 
 	bool StayedAwayFromWalls{true};
+	bool NoWallsInFov{true};
 	for (const auto obstacle : m_vNavigationColliders)
 	{
 		Vector2 obstacleVector = obstacle->GetClosestPoint(m_Location) - (m_Location - dir * 10);
@@ -157,7 +140,7 @@ void QBot::Update(vector<Food*>& foodList, float deltaTime)
 		const float angle = AngleBetween(dir, obstacleVector);
 		if (angle > -m_FOV / 2 && angle < m_FOV / 2) {
 			//m_Visible.push_back(food);
-
+			NoWallsInFov = false;
 			int index = (m_NrOfInputs*0.5f) + static_cast<int>((angle + m_FOV / 2) / angleStep);
 			//int index = static_cast<int>((angle + m_FOV / 2) / angleStep);
 			//experimental invert index
@@ -183,7 +166,11 @@ void QBot::Update(vector<Food*>& foodList, float deltaTime)
 		}
 	}
 
-	if (StayedAwayFromWalls)
+	if (NoWallsInFov)
+	{
+		Reinforcement(m_PositiveQSmall*10, m_MemorySize);
+	}
+	else if (StayedAwayFromWalls)
 	{
 		Reinforcement(m_PositiveQSmall, m_MemorySize);
 	}
@@ -207,7 +194,7 @@ void QBot::Update(vector<Food*>& foodList, float deltaTime)
 
 	const float dAngle = m_SAngle.Get(0, c);
 	m_Angle += dAngle * deltaTime;
-
+	//TODO: also implement a accelerate and decelerate
 	const Elite::Vector2 newDir(cos(m_Angle), sin(m_Angle));
 	SetPosition(GetPosition() + newDir * m_Speed * deltaTime);
 	m_Location = GetPosition();
@@ -218,7 +205,7 @@ void QBot::Update(vector<Food*>& foodList, float deltaTime)
 		// update the bot brain, something went wrong.
 		Reinforcement(m_NegativeQBig,m_MemorySize);
 		m_Alive = false;
-
+		CalculateFitness();
 		//m_Health = 100.0f;
 		//m_Location = m_StartLocation;
 		//SetPosition(m_StartLocation);
@@ -252,49 +239,66 @@ void QBot::Update(vector<Food*>& foodList, float deltaTime)
 }
 
 void QBot::Render(float deltaTime) {
-	//Elite::Vector2 dir(cos(m_Angle), sin(m_Angle));
-	//Elite::Vector2 leftVision(cos(m_Angle + m_FOV / 2), sin(m_Angle + m_FOV / 2));
-	//Elite::Vector2 rightVision(cos(m_Angle - m_FOV / 2), sin(m_Angle - m_FOV / 2));
+	Elite::Vector2 dir(cos(m_Angle), sin(m_Angle));
+	Elite::Vector2 leftVision(cos(m_Angle + m_FOV / 2), sin(m_Angle + m_FOV / 2));
+	Elite::Vector2 rightVision(cos(m_Angle - m_FOV / 2), sin(m_Angle - m_FOV / 2));
 
-	//Elite::Vector2 perpDir(-dir.y, dir.x);
+	Elite::Vector2 perpDir(-dir.y, dir.x);
 
-	//Color c = m_DeadColor;
-	//if (m_Alive) {
-	//	c = m_AliveColor;
-	//}
+	Color color = m_DeadColor;
+	if (m_Alive) {
+		color = m_AliveColor;
+	}
 
+	Color rayColor = {1, 0, 0};
+	Color dirRayColor = {0, 1, 0};
 	//DEBUGRENDERER2D->DrawSolidCircle(m_Location, 2, dir, c);
 	//if (m_Alive) {
 	//	DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * leftVision, c);
 	//	DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * rightVision, c);
 	//}
+	const float angleStep = m_FOV / (m_NrOfInputs / 2);
+	for (int i = 0; i < m_NrOfInputs/2 + 1; ++i)
+	{
+		Elite::Vector2 vision(cos((m_Angle + m_FOV / 2)-angleStep*i), sin((m_Angle + m_FOV / 2)-angleStep*i));
+		DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * vision, rayColor);
+	}
+
+	//The angle its moving towards
+	int r, c;
+	float max = m_ActionMatrixMemoryArr[currentIndex].Max(r, c);
+	const float dAngle = m_SAngle.Get(0, c);
+
+	const Vector2 dDir(cos(dAngle), sin(dAngle));
+	DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * dDir, dirRayColor);
+
 #ifdef _DEBUG
 	DEBUGRENDERER2D->DrawString(m_Location, to_string(static_cast<int>(m_Health)).c_str());
 #endif
 
 
-	//if (m_Alive) {
-	//	for (Food* f : m_Visible) {
-	//		Vector2 loc = f->GetLocation();
-	//		DEBUGRENDERER2D->DrawCircle(loc, 2, c, 0.5f);
-	//	}
-	//}
+	if (m_Alive) {
+		for (Food* f : m_Visible) {
+			Vector2 loc = f->GetLocation();
+			DEBUGRENDERER2D->DrawCircle(loc, 2, color, 0.5f);
+		}
+	}
 
-	//// draw the vision
-	//for (int i = 0; i < m_NrOfInputs; ++i)
-	//{
+	// draw the vision
+	for (int i = 0; i < m_NrOfInputs; ++i)
+	{
 
-	//	if (m_StateMatrixMemoryArr[currentIndex].Get(0, i) > 0.0f) {
-	//		DEBUGRENDERER2D->DrawSolidCircle(m_Location - 2.5 * dir - perpDir * 2.0f * (i - m_NrOfInputs / 2.0f), 1, perpDir, m_AliveColor);
-	//	}
-	//	else {
-	//		DEBUGRENDERER2D->DrawSolidCircle(m_Location - 3.0 * dir - perpDir * 2.0f * (i - m_NrOfInputs / 2.0f), 1, perpDir, m_DeadColor);
-	//	}
-	//}
+		if (m_StateMatrixMemoryArr[currentIndex].Get(0, i) > 0.0f) {
+			DEBUGRENDERER2D->DrawSolidCircle(m_Location - 2.5 * dir - perpDir * 2.0f * (i - m_NrOfInputs / 2.0f), 1, perpDir, m_AliveColor);
+		}
+		else {
+			DEBUGRENDERER2D->DrawSolidCircle(m_Location - 3.0 * dir - perpDir * 2.0f * (i - m_NrOfInputs / 2.0f), 1, perpDir, m_DeadColor);
+		}
+	}
 
-	//char age[10];
-	//snprintf(age, 10, "%.1f seconds", m_Age);
-	//DEBUGRENDERER2D->DrawString(m_Location + m_MaxDistance * dir, age);
+	char age[10];
+	snprintf(age, 10, "%.1f seconds", m_Age);
+	DEBUGRENDERER2D->DrawString(m_Location + m_MaxDistance * dir, age);
 }
 
 bool QBot::IsAlive() const
@@ -305,7 +309,7 @@ bool QBot::IsAlive() const
 void QBot::Reset() 
 {
 	m_Health = 100;
-	m_TimeOfDeath = 0;
+	//m_TimeOfDeath = 0;
 	m_Alive = true;
 	m_FoodEaten = 0;
 
@@ -319,27 +323,28 @@ void QBot::Reset()
 	//float startAngle = Elite::randomFloat(0, static_cast<float>(M_PI) * 2);
 }
 
-float QBot::CalculateFitness() const 
+void QBot::CalculateFitness() 
 {
-	return m_FoodEaten + m_TimeOfDeath;
+	m_Fitness = m_FoodEaten + m_Age;//m_TimeOfDeath;
 }
 
-//void QBot::MutateMatrix(Generation* gen, Elite::FMatrix& matrix, float mutationRate, float mutationAmplitude) 
-//{
-//	for (int c = 0; c < matrix.GetNrOfColumns(); ++c) 
-//	{
-//		for (int r = 0; r < matrix.GetNrOfRows(); ++r) 
-//		{
-//			if (gen->Random(0, 1) < mutationRate) 
-//			{
-//				float update = gen->Random(-mutationAmplitude, mutationAmplitude);
-//				float currentVal = matrix.Get(r, c);
-//				matrix.Set(r, c, currentVal + update);
-//			}
-//		}
-//	}
-//}
+void QBot::MutateMatrix(float mutationRate, float mutationAmplitude) 
+{
+	for (int c = 0; c < m_BotBrain.GetNrOfColumns(); ++c) 
+	{
+		for (int r = 0; r < m_BotBrain.GetNrOfRows(); ++r)
+		{
+			if (randomFloat(0, 1) < mutationRate) 
+			{
+				const float update = randomFloat(-mutationAmplitude, mutationAmplitude);
+				const float currentVal = m_BotBrain.Get(r, c);
+				m_BotBrain.Set(r, c, currentVal + update);
+			}
+		}
+	}
+}
 
+//TODO: go over the memory variable it supposed to be how much memory we take in account so how long ago the actions that we will change
 void QBot::Reinforcement(const float factor, const int memory) const
 {
 	// go back in time, and reinforce (or inhibit) the weights that led to the right/wrong decision.
@@ -350,6 +355,8 @@ void QBot::Reinforcement(const float factor, const int memory) const
 #undef min
 	const int min = std::min(m_MemorySize, memory);
 #pragma pop_macro("disable_min")
+
+	auto oneDivMem{ 1.f / m_MemorySize };
 
 	for (int mi{0}; mi < min; ++mi)
 	{
@@ -380,7 +387,7 @@ void QBot::Reinforcement(const float factor, const int memory) const
 				m_DeltaBotBrain.Add(c, rcMax, -timeFactor * factor * scVal);
 			}
 
-			m_DeltaBotBrain.ScalarMultiply(1.f / m_MemorySize);
+			m_DeltaBotBrain.ScalarMultiply(oneDivMem);
 			m_BotBrain.Add(m_DeltaBotBrain);
 		}
 	}
@@ -395,6 +402,11 @@ float QBot::CalculateInverseDistance(const float realDist) const
 	const float nDist = realDist / m_MaxDistance;
 	const float invDistSquared = m_MaxDistance / (1 + nDist * nDist);
 	return invDistSquared;
+}
+
+void QBot::UniformCrossover(QBot* otherBrain)
+{
+	m_BotBrain.UniformCrossover(otherBrain->m_BotBrain);
 }
 
 

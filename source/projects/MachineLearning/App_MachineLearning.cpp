@@ -11,12 +11,12 @@ using namespace Elite;
 App_MachineLearning::~App_MachineLearning()
 {
 	//SAFE_DELETE(pPointer);
-	SAFE_DELETE(m_pGraph);
+	//SAFE_DELETE(m_pGraph);
 	SAFE_DELETE(m_pDynamicQEnv);
 
-	for (auto pNC : m_vNavigationColliders)
-		SAFE_DELETE(pNC);
-	m_vNavigationColliders.clear();
+	//for (auto pNC : m_vNavigationColliders)
+	//	SAFE_DELETE(pNC);
+	//m_vNavigationColliders.clear();
 }
 
 //Functions
@@ -26,6 +26,16 @@ void App_MachineLearning::Start()
 	//----------- CAMERA ------------
 	DEBUGRENDERER2D->GetActiveCamera()->SetZoom(75.0f);
 	DEBUGRENDERER2D->GetActiveCamera()->SetCenter(Elite::Vector2(0, 0));
+
+	std::cout << "\n\n\n";
+	FMatrix test{7,5};
+	test.Randomize(0,1);
+	test.Print();
+	test.MakeFile("../Matrix.txt", std::ios::trunc);
+	std::cout << "\n\n\n";
+	test.parseFile("../Matrix.txt");
+	test.Print();
+	std::cout << "\n\n\n";
 
 	////Create Boundaries
 	//const float blockSize{ 5.0f };
@@ -103,10 +113,10 @@ void App_MachineLearning::Render(const float deltaTime) const
 	//DEBUGRENDERER2D->DrawString({ 10.0f, 10.0f }, "TestString", Color(1.f, .5f, 0.f), -0.1f);
 	//m_pCurrentGeneration->Render(deltaTime);
 	//m_pGraph->Render(deltaTime);
-	for (const auto collider : m_vNavigationColliders)
-	{
-		collider->RenderElement();
-	}
+	//for (const auto collider : m_vNavigationColliders)
+	//{
+	//	collider->RenderElement();
+	//}
 	m_pDynamicQEnv->Render(deltaTime);
 }
 

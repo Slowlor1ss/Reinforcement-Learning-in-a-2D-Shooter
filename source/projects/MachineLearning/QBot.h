@@ -23,15 +23,24 @@ public:
 
 	virtual ~QBot() override;
 
+	QBot(const QBot&) = delete;
+	QBot(QBot&&) noexcept = delete;
+	QBot& operator=(const QBot&) = delete;
+	QBot& operator=(QBot&&) noexcept = delete;
+
 	virtual void Update(vector<Food*>& food, float deltaTime);
 	void Render(float deltaTime) override;
 	
 	bool IsAlive() const;
 	void Reset();
-	float CalculateFitness() const;
-	//void MutateMatrix(Generation* gen, Elite::FMatrix& matrix, float mutationRate, float mutationAmplitude);
+	//Fitness from last death
+	float GetFitness() const { return m_Fitness; }
+	//Exact fitness at this point in time
+	//float GetCurrentFitness() const { return m_FoodEaten * 3.f + m_Age; }
+	void MutateMatrix(float mutationRate, float mutationAmplitude);
 	void Reinforcement(float factor, int memory) const;
 	float CalculateInverseDistance(float realDist) const;
+	void UniformCrossover(QBot* otherBrain);
 
 	FMatrix* GetBotBrain() { return &m_BotBrain; }
 	float GetAge() const { return m_Age; }
@@ -44,10 +53,20 @@ public:
 
 	bool operator<(const QBot& other) const
 	{
-		return CalculateFitness() < other.CalculateFitness();
+		return GetFitness() < other.GetFitness();
+	}
+	float operator+(const QBot& other) const
+	{
+		return GetFitness() + other.GetFitness();
+	}
+	static inline float sum(const float left, const QBot* other)
+	{
+		return left + other->GetFitness();
 	}
 
 private:
+	void CalculateFitness();
+
 	std::vector<NavigationColliderElement*> m_vNavigationColliders;
 	float m_Radius;
 
@@ -65,8 +84,9 @@ private:
 	float m_Age{ 0.0f };
 
 	// fitness members
-	float m_TimeOfDeath = 0;
-	int m_FoodEaten = 0;
+	//float m_TimeOfDeath = 0;
+	int m_FoodEaten{};
+	float m_Fitness{};
 
 	vector<Food*> m_Visible;
 
@@ -97,5 +117,4 @@ private:
 	int m_CameCloseCounter{ 0 };
 
 };
-
 #endif

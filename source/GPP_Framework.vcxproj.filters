@@ -47,6 +47,11 @@
     <ClCompile Include="projects\MachineLearning\QBot.cpp" />
     <ClCompile Include="projects\MachineLearning\QLearning.cpp" />
     <ClCompile Include="projects\MachineLearning\Population.cpp" />
+    <ClCompile Include="projects\Shared\Agario\AgarioAgent.cpp" />
+    <ClCompile Include="projects\Shared\Agario\AgarioContactListener.cpp" />
+    <ClCompile Include="projects\Shared\Agario\AgarioFood.cpp" />
+    <ClCompile Include="projects\Shared\StringPlusPlus.cpp" />
+    <ClCompile Include="projects\Shared\Utils_General.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="projects\App_Selector.h" />
@@ -142,6 +147,13 @@
     <ClInclude Include="projects\MachineLearning\QBot.h" />
     <ClInclude Include="projects\MachineLearning\QLearning.h" />
     <ClInclude Include="projects\MachineLearning\Population.h" />
+    <ClInclude Include="projects\Shared\Agario\AgarioAgent.h" />
+    <ClInclude Include="projects\Shared\Agario\AgarioContactListener.h" />
+    <ClInclude Include="projects\Shared\Agario\AgarioData.h" />
+    <ClInclude Include="projects\Shared\Agario\AgarioFood.h" />
+    <ClInclude Include="projects\Shared\Utils_General.h" />
+    <ClInclude Include="projects\Shared\StringPlusPlus.h" />
+    <ClInclude Include="projects\Shared\ConsoleColors.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />

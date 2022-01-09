@@ -1,7 +1,7 @@
 //=== General Includes ===
 #include "stdafx.h"
 #include "DynamicQLearning.h"
-#include "Food.h"
+#include "Population.h"
 
 
 DynamicQLearning::DynamicQLearning(int nrOfFood, int memorySize, int nrOfInputs, int nrOfOutputs, bool bias)
@@ -9,7 +9,7 @@ DynamicQLearning::DynamicQLearning(int nrOfFood, int memorySize, int nrOfInputs,
 	//m_NrOfInputs(nrOfInputs),
 	//m_NrOfOutputs(nrOfOutputs),
 	//m_UseBias(bias)
-	: m_pPopulation(new Population(50, nrOfFood, nrOfInputs, nrOfOutputs, bias))
+	: m_pPopulation(new Population(1, nrOfFood, nrOfInputs, nrOfOutputs, bias))
 {
 	//float startx = Elite::randomFloat(-50.0f, 50.0f);
 	//float starty = Elite::randomFloat(-50.0f, 50.0f);

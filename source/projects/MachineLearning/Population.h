@@ -1,5 +1,9 @@
 #pragma once
-#include "projects/MachineLearning/QBot.h"
+
+
+class NavigationColliderElement;
+class Food;
+class QBot;
 
 class Population
 {
@@ -11,6 +15,11 @@ public:
 	void Render(float deltaTime) const;
 
 private:
+	float CalculateFitnessSum() const;
+	float CalculateFitnessSum(unsigned int from, unsigned int to) const;
+	Elite::FMatrix* SelectParentFPS(float sum) const;
+	void SelectParentSUS() const;
+
 	int m_Size;
 	int m_NrOfFood;
 	//bool m_AllBotsDead;
@@ -18,5 +27,6 @@ private:
 	int m_Generation;
 	std::vector<QBot*> m_Bots;
 	std::vector<vector<Food*>> m_Foodstuff;
+	std::vector<NavigationColliderElement*> m_vNavigationColliders;
 };
 

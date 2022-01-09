@@ -9,13 +9,18 @@
 // Includes & Forward Declarations
 //-----------------------------------------------------------------
 
-#include "Population.h"
-#include "QBot.h"
+class Population;
+
 class DynamicQLearning final
 {
 public:
 	DynamicQLearning(int nrOfFood, int memorySize, int nrOfInputs, int nrOfOutputs, bool bias );
 	~DynamicQLearning();
+
+	DynamicQLearning(const DynamicQLearning&) = delete;
+	DynamicQLearning(DynamicQLearning&&) noexcept = delete;
+	DynamicQLearning& operator=(const DynamicQLearning&) = delete;
+	DynamicQLearning& operator=(DynamicQLearning&&) noexcept = delete;
 
 	void Update(float deltaTime) const;
 	void Render(float deltaTime) const;
