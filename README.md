@@ -1,4 +1,5 @@
-# 2D-Shooter-MachineLearning
+<br>
+# Reinforcement-Learning-in-a-2D-Shooter
 
 <br>
 
