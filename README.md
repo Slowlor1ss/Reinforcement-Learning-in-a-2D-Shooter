@@ -51,7 +51,7 @@ Each part of the genetic algorithm has several different ways that it can be exe
 Selection will retain the best performing agents from one generation to the next.<br>
 Herefore I tried the 3 following techniques.<br>
 
-<details><summary><i> Fitness proportionate selection</i> (Click to open)</summary>
+<details open><summary><i> Fitness proportionate selection</i> (Click to open/close)</summary>
 
 <br>
 
@@ -86,7 +86,7 @@ to be selected with the individual fitness over the sum of the fitness.  <br>
 	
 <br>
 
-<details><summary><i>Stochastic universal sampling</i></summary>
+<details open><summary><i>Stochastic universal sampling</i></summary>
 
 <br>
 	
@@ -121,7 +121,7 @@ a sampling of all the agents by choosing them at evenly spaced intervals.<br>
 
 <br>
 
-<details><summary><i>Tournament selection</i></summary>
+<details open><summary><i>Tournament selection</i></summary>
 
 <br>
 
