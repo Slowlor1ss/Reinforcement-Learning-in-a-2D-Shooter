@@ -10,7 +10,7 @@ using namespace Elite;
 #include "projects/Movement/SteeringBehaviors/Steering/SteeringBehaviors.h"
 
 
-#include "framework\EliteAI\EliteNavigation\Algorithms\ENavGraphPathfinding.h"
+#include "framework/EliteAI/EliteNavigation/Algorithms/ENavGraphPathfinding.h"
 
 //Statics
 bool App_NavMeshGraph::sShowPolygon = true;

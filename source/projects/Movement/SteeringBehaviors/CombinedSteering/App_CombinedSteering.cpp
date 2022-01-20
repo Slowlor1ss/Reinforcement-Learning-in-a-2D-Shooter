@@ -5,7 +5,6 @@
 #include "App_CombinedSteering.h"
 #include "../SteeringAgent.h"
 #include "CombinedSteeringBehaviors.h"
-#include "projects\Movement\SteeringBehaviors\Obstacle.h"
 
 using namespace Elite;
 App_CombinedSteering::~App_CombinedSteering()

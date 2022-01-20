@@ -40,3 +40,9 @@ void Food::Update()
 		}
 	}
 }
+
+void Food::Respawn()
+{
+	m_RespawnCounter = 0;
+	m_IsEaten = false;
+}

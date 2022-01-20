@@ -1,16 +1,9 @@
 #ifndef MACHINE_LEARNING_APPLICATION_H
 #define MACHINE_LEARNING_APPLICATION_H
-//-----------------------------------------------------------------
-// Includes & Forward Declarations
-//-----------------------------------------------------------------
-#include "framework/EliteInterfaces/EIApp.h"
-#include "QLearning.h"
-#include "DynamicQLearning.h"
-#include "projects/Shared/NavigationColliderElement.h"
 
-//-----------------------------------------------------------------
-// Application
-//-----------------------------------------------------------------
+#include "framework/EliteInterfaces/EIApp.h"
+#include "DynamicQLearning.h"
+
 class App_MachineLearning final : public IApp
 {
 public:
@@ -24,13 +17,10 @@ public:
 	void Render(float deltaTime) const override;
 
 private:
+
 	//Datamembers
 	DynamicQLearning* m_pDynamicQEnv{nullptr};
-	//QLearning* m_pGraph;
 
-	//--Level--
-	float m_TrimWorldSize = 70.f;
-	//std::vector<NavigationColliderElement*> m_vNavigationColliders = {};
 
 	//C++ make the class non-copyable
 	App_MachineLearning(const App_MachineLearning&) = delete;
@@ -39,3 +29,32 @@ private:
 	App_MachineLearning& operator=(App_MachineLearning&&) noexcept = delete;
 };
 #endif
+
+//Settings for our reinforced learning project
+struct SettingsRL
+{
+	//Settings
+	static constexpr bool m_TrainShooting{ false };
+	static constexpr bool m_TrainNavigation{ false };
+	static constexpr bool m_TrainMoveToItems{ true };
+
+	static constexpr bool m_RespawnFoodEachGen{ true };
+
+	////Stochastic universal sampling
+	//static constexpr bool m_UseSUS{ true };
+	////Fitness proportionate selection
+	//static constexpr bool m_UseFPS{ false };
+	////Tournament selection
+	//static constexpr bool m_UseTS{ false };
+	//
+	////Allow only one of these 3 bools to be true at a time
+	//static_assert("Exactly one of these booleans must be true" && !(m_UseSUS ? (m_UseFPS || m_UseTS) : (m_UseFPS && m_UseTS)));
+
+	enum class SelectionMethod
+	{
+		UseSUS, //Stochastic universal sampling
+		UseFPS, //Fitness proportionate selection
+		UseTS	//Tournament selection
+	};
+	static constexpr SelectionMethod m_SelectionMethod{ SelectionMethod::UseTS };
+};

@@ -1,8 +1,8 @@
 #ifndef QBOT_H
 #define QBOT_H
 
-#include "framework\EliteMath\EMath.h"
-#include "framework\EliteRendering\ERenderingTypes.h"
+#include "framework/EliteMath/EMath.h"
+#include "framework/EliteRendering/ERenderingTypes.h"
 #include "Food.h"
 #include "projects/Shared/BaseAgent.h"
 #include "projects/Shared/NavigationColliderElement.h"
@@ -28,22 +28,24 @@ public:
 	QBot& operator=(const QBot&) = delete;
 	QBot& operator=(QBot&&) noexcept = delete;
 
-	virtual void Update(vector<Food*>& food, float deltaTime);
+	virtual void Update(vector<Food*>& foodList, Vector2 enemyPos, float deltaTime);
 	void Render(float deltaTime) override;
-	
+
 	bool IsAlive() const;
 	void Reset();
 	//Fitness from last death
 	float GetFitness() const { return m_Fitness; }
-	//Exact fitness at this point in time
-	//float GetCurrentFitness() const { return m_FoodEaten * 3.f + m_Age; }
-	void MutateMatrix(float mutationRate, float mutationAmplitude);
+	void PrintInfo() const;
+
+	void MutateMatrix(float mutationRate, float mutationAmplitude) const;
 	void Reinforcement(float factor, int memory) const;
 	float CalculateInverseDistance(float realDist) const;
 	void UniformCrossover(QBot* otherBrain);
 
 	FMatrix* GetBotBrain() { return &m_BotBrain; }
+	FMatrix GetRawBotBrain() { return m_BotBrain; }
 	float GetAge() const { return m_Age; }
+	float GetFoodEaten() const { return m_FoodEaten; }
 
 	void SetBotBrain(const FMatrix& brain) { m_BotBrain.Set(brain); }
 	void SetObstacles(const std::vector<NavigationColliderElement*>& obstacles)
@@ -53,32 +55,41 @@ public:
 
 	bool operator<(const QBot& other) const
 	{
-		return GetFitness() < other.GetFitness();
+		return m_Fitness < other.m_Fitness;
 	}
 	float operator+(const QBot& other) const
 	{
-		return GetFitness() + other.GetFitness();
+		return m_Fitness + other.m_Fitness;
 	}
-	static inline float sum(const float left, const QBot* other)
+	static float sum(const float left, const QBot* other)
 	{
-		return left + other->GetFitness();
+		return left + other->m_Fitness;
 	}
 
+
+
 private:
+
 	void CalculateFitness();
+
+	void UpdateBot(Vector2 enemyPos, Vector2 dir, float deltaTime);
+	void UpdateNavigation(const Vector2& dir, const float& angleStep, const float& speedStep, float deltaTime);
+	void UpdateFood(std::vector<Food*>& foodList, const Vector2& dir, const float& angleStep);
+	void UpdateEnemy(Vector2 enemyPos, Vector2 dir, float angleStep, float speedStep);
+
 
 	std::vector<NavigationColliderElement*> m_vNavigationColliders;
 	float m_Radius;
 
-	Elite::Vector2 m_Location; //TODO: maybe remove location and use get position
-	Elite::Vector2 m_StartLocation;
+	Vector2 m_Location; //TODO: maybe remove location and use get position
+	Vector2 m_StartLocation;
 	float m_Angle;
 	float m_FOV;
 	float m_MaxDistance = 50.0f;
 	float m_SFOV;
-	Elite::Color m_AliveColor;
-	Elite::Color m_DeadColor;
-	float m_Speed = 30.0f;
+	Color m_AliveColor;
+	Color m_DeadColor;
+	float m_MaxSpeed = 30.0f;
 	float m_Health{ 100.0f };
 	bool m_Alive = true;
 	float m_Age{ 0.0f };
@@ -86,13 +97,18 @@ private:
 	// fitness members
 	//float m_TimeOfDeath = 0;
 	int m_FoodEaten{};
+	int m_WallsHit{};
+	int m_EnemiesHit{};
 	float m_Fitness{};
+	float m_DistanceEnemyAtDeath{};
 
 	vector<Food*> m_Visible;
 
 	int m_NrOfInputs;
+	int m_NrOfMovementInputs{};
 	bool m_UseBias;
 	int m_NrOfOutputs;
+	int m_NrOfMovementOutputs{};
 	int m_MemorySize;
 
 	// currentIndex stores the information at the current time.
@@ -101,20 +117,27 @@ private:
 	// so that the render method also has the correct currentIndex. But make sure
 	// the matrices at 0 are also filled in, otherwise problems.
 	int currentIndex{ -1 };
-	Elite::FMatrix* m_StateMatrixMemoryArr;
-	Elite::FMatrix* m_ActionMatrixMemoryArr;
-	Elite::FMatrix m_BotBrain;
-	Elite::FMatrix m_DeltaBotBrain;
-	Elite::FMatrix m_SAngle;
+	FMatrix* m_StateMatrixMemoryArr;
+	FMatrix* m_ActionMatrixMemoryArr;
+	FMatrix m_BotBrain;
+	FMatrix m_DeltaBotBrain;
+	FMatrix m_SAngle;
+	FMatrix m_SSpeed;
+	int m_SShoot[2];
 
 	// Q-factors, enable usage for different learning parameters for positive or for negative reinforcement.
-	float m_NegativeQBig{ -0.5f };
-	float m_NegativeQ{ -0.1f };
-	float m_NegativeQSmall{ -0.01f };
+	float m_NegativeQBig{ -0.05f };
+	float m_NegativeQ{ -0.01f };
+	float m_NegativeQSmall{ -0.0001f };
 	float m_PositiveQSmall{ 0.0001f };
-	float m_PositiveQ{ 0.1f };
-	float m_PositiveQBig{ 1.0f };
+	float m_PositiveQ{ 0.01f };
+	float m_PositiveQBig{ 0.05f };
 	int m_CameCloseCounter{ 0 };
-
+	int m_MoveAroundCounter{ 1000 };
+	Vector2 m_prevPos;
+	int m_WallCheckCounter{ 50 };
+	bool m_Shoot{ false };
+	int m_ShootCounter{10};
+	bool m_IsEnemyBehindWall{false};
 };
 #endif

@@ -1,14 +1,8 @@
-/*=============================================================================*/
-// Copyright 2021-2022 Elite Engine
-// Authors: Koen Samyn
-/*=============================================================================*/
 #ifndef DYNAMIC_Q_LEARNING
 #define DYNAMIC_Q_LEARNING
 
-//-----------------------------------------------------------------
-// Includes & Forward Declarations
-//-----------------------------------------------------------------
-
+class Wander;
+class SteeringAgent;
 class Population;
 
 class DynamicQLearning final
@@ -29,9 +23,13 @@ public:
 	//QBot* GetQBot2() const { return m_pQBot2; }
 
 private:
-	static constexpr int MEMORY_SIZE = 200;
 
 	Population* m_pPopulation;
+	SteeringAgent* m_Enemy;
+	Wander* m_Wander;
+
+	//--Level--
+	static constexpr float m_TrimWorldSize = 170.f;
 
 	//int m_MemorySize;
 	//int m_NrOfInputs;
