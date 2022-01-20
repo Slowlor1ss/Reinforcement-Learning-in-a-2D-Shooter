@@ -4,8 +4,6 @@
 //Includes
 #include "SteeringBehaviors.h"
 #include "../SteeringAgent.h"
-#include "../Obstacle.h"
-#include "framework\EliteMath\EMatrix2x3.h"
 
 //SEEK
 //****
