@@ -42,7 +42,9 @@ bool gRequestShutdown = false;
 #undef main //Undefine SDL_main as main
 int main(int argc, char* argv[])
 {
-	srand((unsigned)time(0));
+	auto seed{ (unsigned)time(0) };
+	srand(seed);
+	std::cout << "Seed: " << seed <<'\n';
 
 	int x{}, y{};
 	bool runExeWithCoordinates{ argc == 3 };
