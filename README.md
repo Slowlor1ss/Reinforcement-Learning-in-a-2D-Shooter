@@ -96,26 +96,32 @@ to be selected with the individual fitness over the sum of the fitness.  <br>
 	
 ```c++
 //Stochastic universal sampling
-void Population::SelectParentSUS() const
+void Population::SelectParentSUS(const float sum) const
 {
+	std::vector<FMatrix*> matingPool{};
 	std::vector<float> pointers{};
-	auto num{ m_Bots.size() }; //Number of offspring to keep
-	auto dist = num / static_cast<float>(num);
-	auto start = randomFloat(0, dist);
-	for (size_t i{0}; i < num; ++i)
+
+	const auto maxFit{ sum };
+	constexpr auto num{ 25 }; //Number of offspring to keep
+	const auto dist = maxFit / static_cast<float>(num);
+	const auto start = randomFloat(0, dist);
+	for (size_t i{ 0 }; i < num; ++i)
 	{
 		pointers.push_back(start + static_cast<float>(i) * dist);
 	}
 
-	for (size_t i{0}; i < pointers.size(); ++i)
+	for (size_t i{ 0 }; i < pointers.size(); ++i)
 	{
 		auto j = 0;
 		while (CalculateFitnessSum(0, j) < pointers[i])
 		{
 			j++;
 		}
-		m_Bots[i]->SetBotBrain(*m_Bots[j]->GetBotBrain());
+		matingPool.push_back(m_Bots[j]->GetBotBrain());
 	}
+
+	for (size_t i{ 0 }; i < m_Bots.size(); ++i)
+		m_Bots[i]->SetBotBrain(*matingPool[i % matingPool.size()]);
 }
 ```
 </details>
@@ -188,6 +194,8 @@ Mutation allows GA to avoid falling in to local minima and helps them explore th
 Mutation is done bit by bit, but the mutation rate can change. It can go from 0% to 100%. However, the mutation is typically<br>
 around 1%. Anything much higher, will introduce too much randomness, anything less, and you<br>
 don’t get enough and the sample tends to stagnate. I went with a mutation rate of 1% and amplitude of 3%.<br>
+However do keep in mind the number is also depended on your q-factors if you have high renforcement number then its should be higher<br>
+if thy're low it should be lower.
 
 <br>
 
@@ -226,9 +234,9 @@ Figure 1 shows an image of the map.<br>
 </p>
 
 <br>
-The RL bot is equipped with 16 sensors for item seeking and another 16 looking at its surroundings, <br>
+The RL bot is equipped with 3 times 8 sensors, 8 for item seeking, 8 looking at its surroundings and another 8 for accelerating and deccelerating, <br>
 The sensors range from 45 degrees to the left to 45 degrees to the right.<br>
-The first 16 sensors were used to determine if the was food in the view of the bot.<br>
+The first 8 sensors were used to determine if the was food in the view of the bot.<br>
 Then the distance to that food object is calculated and inverted, the inverted distance is saved<br>
 in the memory matrix of our RL agent. <br>
 We save the inverted distance cause we only have one memory matrix and want the closest food to have the most impact<br>
@@ -252,12 +260,17 @@ represent food within our view, and the green ray represnts the newly chosen dir
 	
 ### Result
 	
-Work in progress.
+<img src="./myScreen.gif" alt="Gen 1 Using SUS" width="500" height="600">
 	
 <br>
 	
 **Combat Task**
 ---
+	
+The aim of the combat task was to see how well the agent could learn to aim and shoot against a wandering enemy>
+For the combat task 2 input nodes were added, this allows the bot to decide whether or not to shoot,
+whether or not the bot shoots is depended on the output of the other sensors and wheather the enemy is in sight.
+
 
 
 	
