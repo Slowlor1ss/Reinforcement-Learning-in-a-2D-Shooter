@@ -163,9 +163,25 @@ namespace Elite
 			}
 		}
 
-		void Set(const FMatrix& other) const
+		//void Set(const FMatrix& other) const
+		//{
+		//	if (other.m_Size > m_Size)
+		//	{
+		//		printf("Different sizes!\n");
+		//		return;
+		//	}
+
+		//	for (int i = 0; i < m_Size; ++i)
+		//	{
+		//		//const float value = 0;//*other.m_Data;
+		//		//Set(0, i, *other.m_Data);
+		//		m_Data[i] = *other.m_Data;
+		//	}
+		//}
+
+		void Set(const FMatrix* other) const
 		{
-			if (other.m_Size > m_Size)
+			if (other->m_Size > m_Size)
 			{
 				printf("Different sizes!\n");
 				return;
@@ -175,7 +191,7 @@ namespace Elite
 			{
 				//const float value = 0;//*other.m_Data;
 				//Set(0, i, *other.m_Data);
-				m_Data[i] = *other.m_Data;
+				m_Data[i] = other->m_Data[i];
 			}
 		}
 
