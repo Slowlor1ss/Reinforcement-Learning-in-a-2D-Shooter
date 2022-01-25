@@ -260,7 +260,9 @@ represent food within our view, and the green ray represnts the newly chosen dir
 	
 ### Result
 	
-<img src="./myScreen.gif" alt="Gen 1 Using SUS" width="500" height="600">
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/SUSFood.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/SUSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
 	
 <br>
 	
