@@ -14,6 +14,11 @@ BaseAgent::BaseAgent(float radius):	m_Radius(radius)
 	m_pRigidBody->AddShape(&shape);
 }
 
+BaseAgent::BaseAgent(float radius, const Elite::Color& color) : BaseAgent(radius)
+{
+	m_BodyColor = color;
+}
+
 
 BaseAgent::~BaseAgent()
 {

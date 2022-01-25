@@ -29,7 +29,7 @@ private:
 	Wander* m_Wander;
 
 	//--Level--
-	static constexpr float m_TrimWorldSize = 170.f;
+	static constexpr float m_TrimWorldSize = 100.f;
 
 	//int m_MemorySize;
 	//int m_NrOfInputs;

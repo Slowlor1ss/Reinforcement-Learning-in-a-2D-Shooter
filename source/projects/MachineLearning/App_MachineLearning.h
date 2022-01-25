@@ -34,9 +34,9 @@ private:
 struct SettingsRL
 {
 	//Settings
-	static constexpr bool m_TrainShooting{ false };
-	static constexpr bool m_TrainNavigation{ false };
-	static constexpr bool m_TrainMoveToItems{ true };
+	static constexpr bool m_TrainShooting{ true };
+	static constexpr bool m_TrainNavigation{ true };
+	static constexpr bool m_TrainMoveToItems{ false };
 
 	static constexpr bool m_RespawnFoodEachGen{ true };
 
@@ -56,5 +56,5 @@ struct SettingsRL
 		UseFPS, //Fitness proportionate selection
 		UseTS	//Tournament selection
 	};
-	static constexpr SelectionMethod m_SelectionMethod{ SelectionMethod::UseTS };
+	static constexpr SelectionMethod m_SelectionMethod{ SelectionMethod::UseSUS };
 };

@@ -20,6 +20,7 @@ public:
 	//--- Constructor & Destructor ---
 	SteeringAgent() = default;
 	SteeringAgent(float radius) : BaseAgent(radius) {};
+	SteeringAgent(float radius, Elite::Color color) : BaseAgent(radius, color) {};
 	virtual ~SteeringAgent() = default;
 
 	//--- Agent Functions ---

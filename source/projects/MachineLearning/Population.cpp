@@ -21,7 +21,7 @@ Population::Population(int size, float worldSize, int nrOfFood, int memorySize, 
 	if (SettingsRL::m_TrainNavigation)
 	{
 		//Create Boundaries
-		constexpr float blockSize{ 3.0f };
+		constexpr float blockSize{ 5.0f };
 		constexpr float hBlockSize{ blockSize / 2.0f };
 		m_vNavigationColliders.push_back(new NavigationColliderElement(Vector2(-worldSize - hBlockSize, 0.f), blockSize, (worldSize + blockSize) * 2.0f));
 		m_vNavigationColliders.push_back(new NavigationColliderElement(Vector2(worldSize + hBlockSize, 0.f), blockSize, (worldSize + blockSize) * 2.0f));
@@ -154,7 +154,7 @@ void Population::UpdateSUS()
 	for (size_t i{ 0 }; i < m_Bots.size(); ++i)
 	{
 		//m_Bots[i]->UniformCrossover(m_Bots[randomInt(static_cast<int>(m_Bots.size()))]);
-		m_Bots[i]->MutateMatrix(0.1f, 0.1f);
+		m_Bots[i]->MutateMatrix(0.1f, 0.001f);
 		m_Bots[i]->Reset();
 
 		//Re-spawn all food
@@ -187,10 +187,10 @@ void Population::UpdateTournamentSelection()
 	for (size_t i{ 0 }; i < m_Bots.size(); ++i)
 	{
 		if(m_Bots[i] != BestBot)
-			m_Bots[i]->SetBotBrain(*BestBrain);
+			m_Bots[i]->SetBotBrain(BestBrain);
 
 		//m_Bots[i]->UniformCrossover(m_Bots[randomInt(static_cast<int>(m_Bots.size()))]);
-		m_Bots[i]->MutateMatrix(0.1f, 0.01f);
+		m_Bots[i]->MutateMatrix(0.1f, 0.001f);
 		m_Bots[i]->Reset();
 
 		//Re-spawn all food
@@ -224,9 +224,9 @@ void Population::UpdateFitnessProportionateSelection()
 		
 	for (size_t i{ 0 }; i < m_Bots.size(); ++i)
 	{
-		m_Bots[i]->SetBotBrain(*SelectParentFPS(sum));
+		m_Bots[i]->SetBotBrain(SelectParentFPS(sum));
 		//m_Bots[i]->UniformCrossover(m_Bots[randomInt(static_cast<int>(m_Bots.size()))]);
-		m_Bots[i]->MutateMatrix(0.1f, 0.1f);
+		m_Bots[i]->MutateMatrix(0.1f, 0.001f);
 		m_Bots[i]->Reset();
 
 		//Re-spawn all food
@@ -358,7 +358,7 @@ float Population::CalculateFitnessSum(const unsigned int from, unsigned int to) 
 		to = from + 1;
 	}
 	if (to > m_Bots.size()) {
-		std::cout << "to was too big, putting it to max possible value\n";
+		std::cout << to << "to was too big, putting it to max possible value\n";
 		to = m_Bots.size();
 	}
 
@@ -415,5 +415,5 @@ void Population::SelectParentSUS(const float sum) const
 	}
 
 	for (size_t i{ 0 }; i < m_Bots.size(); ++i)
-		m_Bots[i]->SetBotBrain(*matingPool[i % matingPool.size()]);
+		m_Bots[i]->SetBotBrain(matingPool[i % matingPool.size()]);
 }

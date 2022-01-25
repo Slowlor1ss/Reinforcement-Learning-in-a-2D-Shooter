@@ -4,6 +4,7 @@ class BaseAgent
 {
 public:
 	BaseAgent(float radius = 1.f);
+	BaseAgent(float radius, const Elite::Color& color);
 	virtual ~BaseAgent();
 
 	virtual void Update(float dt);

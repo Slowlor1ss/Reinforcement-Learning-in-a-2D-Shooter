@@ -12,7 +12,7 @@ void App_MachineLearning::Start()
 {
 	//Initialization
 	//----------- CAMERA ------------
-	DEBUGRENDERER2D->GetActiveCamera()->SetZoom(75.0f);
+	DEBUGRENDERER2D->GetActiveCamera()->SetZoom(100.0f);
 	DEBUGRENDERER2D->GetActiveCamera()->SetCenter(Elite::Vector2(0, 0));
 
 	//std::cout << "\n\n\n";
@@ -25,7 +25,7 @@ void App_MachineLearning::Start()
 	//test.Print();
 	//std::cout << "\n\n\n";
 
-	constexpr int nrOfFood{200 * static_cast<int>(SettingsRL::m_TrainMoveToItems) };
+	constexpr int nrOfFood{100 * static_cast<int>(SettingsRL::m_TrainMoveToItems) };
 
 	m_pDynamicQEnv = new DynamicQLearning(nrOfFood, 100, 8*3+2, 5*3+2, true);
 }

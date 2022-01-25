@@ -47,7 +47,8 @@ public:
 	float GetAge() const { return m_Age; }
 	float GetFoodEaten() const { return m_FoodEaten; }
 
-	void SetBotBrain(const FMatrix& brain) { m_BotBrain.Set(brain); }
+	//void SetBotBrain(const FMatrix& brain) { m_BotBrain.Set(brain); }
+	void SetBotBrain(const FMatrix* brain) { m_BotBrain.Set(brain); }
 	void SetObstacles(const std::vector<NavigationColliderElement*>& obstacles)
 	{
 		m_vNavigationColliders = obstacles;
@@ -126,16 +127,16 @@ private:
 	int m_SShoot[2];
 
 	// Q-factors, enable usage for different learning parameters for positive or for negative reinforcement.
-	float m_NegativeQBig{ -0.05f };
-	float m_NegativeQ{ -0.01f };
-	float m_NegativeQSmall{ -0.0001f };
-	float m_PositiveQSmall{ 0.0001f };
-	float m_PositiveQ{ 0.01f };
-	float m_PositiveQBig{ 0.05f };
-	int m_CameCloseCounter{ 0 };
-	int m_MoveAroundCounter{ 1000 };
+	float m_NegativeQBig{ -0.001f };
+	float m_NegativeQ{ -0.0001f };
+	float m_NegativeQSmall{ -0.00001f };
+	float m_PositiveQSmall{ 0.00001f };
+	float m_PositiveQ{ 0.0001f };
+	float m_PositiveQBig{ 0.001f };
+	int m_CameCloseCounter{ 50 };
+	int m_MoveAroundCounter{ 2000 };
 	Vector2 m_prevPos;
-	int m_WallCheckCounter{ 50 };
+	int m_WallCheckCounter{ 100 };
 	bool m_Shoot{ false };
 	int m_ShootCounter{10};
 	bool m_IsEnemyBehindWall{false};

@@ -70,8 +70,8 @@ QBot::QBot(float x,
 		m_StateMatrixMemoryArr[i].Resize(1, m_NrOfInputs + (m_UseBias ? 1 : 0));
 		m_ActionMatrixMemoryArr[i].Resize(1, m_NrOfOutputs);
 	}
-	m_BotBrain.Randomize(-1.0f, 1.0f);
-	//m_BotBrain.parseFile("../ReadMatrix.txt");
+	//m_BotBrain.Randomize(-1.0f, 1.0f);
+	m_BotBrain.parseFile("../ReadMatrix.txt");
 	if (m_UseBias) {
 		m_BotBrain.SetRowAll(m_NrOfInputs, -10.0f);
 	}
@@ -121,7 +121,8 @@ void QBot::Update(vector<Food*>& foodList, const Vector2 enemyPos, const float d
 	m_Health -= 10 * deltaTime;
 	if (m_Health < 0) {
 		// update the bot brain, they did something bad
-		Reinforcement(m_NegativeQBig, m_MemorySize);
+		if constexpr (!SettingsRL::m_TrainShooting)
+			Reinforcement(m_NegativeQBig, m_MemorySize);
 		m_Alive = false;
 		m_DistanceEnemyAtDeath = GetPosition().DistanceSquared(enemyPos);
 		CalculateFitness();
@@ -135,7 +136,7 @@ void QBot::UpdateBot(Vector2 enemyPos, const Vector2 dir, const float deltaTime)
 	//m_StateMatrixMemoryArr[currentIndex].Print();
 	m_StateMatrixMemoryArr[currentIndex].Set(0, m_NrOfInputs, 1); //bias
 	m_StateMatrixMemoryArr[currentIndex].MatrixMultiply(m_BotBrain, m_ActionMatrixMemoryArr[currentIndex]);
-	//m_ActionMatrixMemoryArr[currentIndex].Sigmoid();
+	m_ActionMatrixMemoryArr[currentIndex].Sigmoid();
 
 	int r, cAngle, cAngle2, cSpeed, cShoot;
 	m_ActionMatrixMemoryArr[currentIndex].Max(r, cAngle, 0, m_NrOfMovementOutputs * (1 / 3.f));
@@ -169,17 +170,23 @@ void QBot::UpdateBot(Vector2 enemyPos, const Vector2 dir, const float deltaTime)
 		
 		if (m_SShoot[cShoot] && m_ShootCounter == 0 )
 		{
-			if(!m_IsEnemyBehindWall && AreEqual(AngleBetween(dir, enemyPos - m_Location), 0.f, 0.05f)){
-				Reinforcement(m_PositiveQBig * 10, m_MemorySize);
-				++m_EnemiesHit;
-				cout << "Hit enemy\n";
+			//only count a hit when the enemy was visible and it was a hit
+			if(GetPosition().DistanceSquared(enemyPos) < Elite::Square(m_MaxDistance))
+			{
+				if (!m_IsEnemyBehindWall && AreEqual(AngleBetween(dir, enemyPos - m_Location), 0.f, 0.05f))
+				{
+					Reinforcement(m_PositiveQBig * 10, m_MemorySize);
+					++m_EnemiesHit;
+					m_Health += 1;
+					cout << "Hit enemy\n";
+				}
+				else{
+					Reinforcement(m_NegativeQSmall, m_MemorySize);
+					//cout << "Missed enemy";
+				}
+				DEBUGRENDERER2D->DrawDirection(GetPosition(), dir, 1000, { 1,0,0 });
+				m_ShootCounter = 10;
 			}
-			else{
-				Reinforcement(m_NegativeQSmall, m_MemorySize);
-				//cout << "Missed enemy";
-			}
-			DEBUGRENDERER2D->DrawDirection(GetPosition(), dir, 1000, { 1,0,0 });
-			m_ShootCounter = 10;
 		}
 
 	}
@@ -259,8 +266,10 @@ void QBot::UpdateNavigation(const Vector2& dir, const float& angleStep, const fl
 		}
 		//hits a wall
 		if (dist < 0.5f + m_Radius) {
+
 			++m_WallsHit;
-			Reinforcement(m_NegativeQ, m_MemorySize);
+			m_Health -= 10.0f * deltaTime;
+			Reinforcement(m_NegativeQSmall, 50);
 			break;
 		}
 	}
@@ -274,28 +283,29 @@ void QBot::UpdateNavigation(const Vector2& dir, const float& angleStep, const fl
 
 	if (m_WallCheckCounter == 0)
 	{
-		/*if (NoWallsInFov)
-		Reinforcement(m_PositiveQBig , m_MemorySize);
-		else */if (StayedAwayFromWalls || NoWallsInFov)
-			Reinforcement(m_PositiveQ, m_MemorySize);
+		if (NoWallsInFov)
+			Reinforcement(m_PositiveQ, 50);
+		else if (StayedAwayFromWalls || NoWallsInFov)
+			Reinforcement(m_PositiveQSmall, 50);
 
-		m_WallCheckCounter = 50;
+		m_WallCheckCounter = 100;
 	}
 
 	if (m_MoveAroundCounter > 0) {
 		--m_MoveAroundCounter;
 	}
 
+	//TODO: make it framerate independent
 	//encourage exploring the whole map and nor rotation around one point
 	if (m_MoveAroundCounter == 0) {
 		if (GetPosition().DistanceSquared(m_prevPos) < Square(30))
 		{
 			Reinforcement(m_NegativeQ, m_MemorySize);
-			m_Health -= 10.f;
+			//m_Health -= 10.f;
 		}
 
 		m_prevPos = { GetPosition() };
-		m_MoveAroundCounter = 1000;
+		m_MoveAroundCounter = 2000;
 	}
 }
 
@@ -348,7 +358,7 @@ void QBot::UpdateFood(std::vector<Food*>& foodList, const Vector2& dir, const fl
 			m_CameCloseCounter = 50;
 			++m_FoodEaten;
 			m_Health += 20.0f;
-			Reinforcement(m_PositiveQBig, 50);
+			Reinforcement(m_PositiveQ, 50);
 		}
 	}
 
@@ -358,7 +368,7 @@ void QBot::UpdateFood(std::vector<Food*>& foodList, const Vector2& dir, const fl
 
 	//Add a negative reinforcement if the bot near misses food (only every 50 frames at max)
 	if (cameClose && m_CameCloseCounter == 0) {
-		Reinforcement(m_NegativeQSmall, 50);
+		Reinforcement(m_NegativeQ, 50);
 		m_CameCloseCounter = 50;
 	}
 }
@@ -379,12 +389,12 @@ void QBot::Render(float deltaTime) {
 	Color rayColor = { 1, 0, 0 };
 	//Color dirRayColor = {0, 1, 0};
 	////DEBUGRENDERER2D->DrawSolidCircle(m_Location, 2, dir, c);
-	if (m_Alive) {
-		DEBUGRENDERER2D->DrawSegment(m_Location, m_Location + 10 * dir, rayColor);
-		////DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * leftVision, rayColor);
-		////DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * rightVision, rayColor);
-	}
-	//#ifdef _DEBUG
+	//if (m_Alive) {
+	DEBUGRENDERER2D->DrawSegment(m_Location, m_Location + 10 * dir, rayColor);
+	//	//DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * leftVision, rayColor);
+	//	//DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * rightVision, rayColor);
+	//}
+	////#ifdef _DEBUG
 	//	const float angleStep = m_FOV / (m_NrOfInputs / 2);
 	//	for (int i = 0; i < m_NrOfInputs/2 + 1; ++i)
 	//	{
@@ -404,17 +414,17 @@ void QBot::Render(float deltaTime) {
 	//	const float dAngle = m_SAngle.Get(0, cAngle);
 	//
 	//	const Vector2 dDir(cos(dAngle), sin(dAngle));
-	//	DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * dDir, dirRayColor);
+	//	//DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * dDir, dirRayColor);
 	//
 	//	DEBUGRENDERER2D->DrawString(m_Location, to_string(static_cast<int>(m_Health)).c_str());
 	//
 	//
-	//	if (m_Alive) {
-	//		for (Food* f : m_Visible) {
-	//			Vector2 loc = f->GetLocation();
-	//			DEBUGRENDERER2D->DrawCircle(loc, 2, color, 0.5f);
-	//		}
-	//	}
+	//	//if (m_Alive) {
+	//	//	for (Food* f : m_Visible) {
+	//	//		Vector2 loc = f->GetLocation();
+	//	//		DEBUGRENDERER2D->DrawCircle(loc, 2, color, 0.5f);
+	//	//	}
+	//	//}
 	//
 	//	// draw the vision
 	//	for (int i = 0; i < m_NrOfInputs; ++i)
@@ -431,7 +441,7 @@ void QBot::Render(float deltaTime) {
 	//	char age[10];
 	//	snprintf(age, 10, "%.1f seconds", m_Age);
 	//	DEBUGRENDERER2D->DrawString(m_Location + m_MaxDistance * dir, age);
-	//#endif
+	////#endif
 }
 
 bool QBot::IsAlive() const
@@ -445,6 +455,7 @@ void QBot::Reset()
 	//m_TimeOfDeath = 0;
 	m_Alive = true;
 	m_FoodEaten = 0;
+	m_EnemiesHit = 0;
 
 	m_Age = 0;
 	m_Location = m_StartLocation;
@@ -458,7 +469,7 @@ void QBot::Reset()
 
 void QBot::CalculateFitness()
 {
-	m_Fitness = m_FoodEaten + m_Age + m_EnemiesHit - m_WallsHit;
+	m_Fitness = m_FoodEaten + m_Age + m_EnemiesHit /*+ ((10000 - m_WallsHit)/ 1000.f)*/;
 }
 
 void QBot::PrintInfo() const
