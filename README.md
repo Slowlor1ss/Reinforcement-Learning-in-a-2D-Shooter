@@ -258,14 +258,6 @@ represent food within our view, and the green ray represnts the newly chosen dir
 	
 <br>
 	
-### Result
-	
-<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/SUSFood.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
-
-<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/SUSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
-	
-<br>
-	
 **Combat Task**
 ---
 	
@@ -273,9 +265,123 @@ The aim of the combat task was to see how well the agent could learn to aim and 
 For the combat task 2 input nodes were added, this allows the bot to decide whether or not to shoot,
 whether or not the bot shoots is depended on the output of the other sensors and wheather the enemy is in sight.
 
+	
+<br>
+	
+### Result
 
+I started off testing and experementing with an environment that only has food, and testing the different selection methods on it.
+	
+***Testing the different selection methods using a simple problem***
+---
+
+> #### *Generation 1 Using Stochastic universal sampling*
+
+We can see that in the first generation most agents are clueless of what they're doing, 
+but 2 agents seem to figure out that they have move over the food to survive
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/SUSFood.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
 
 	
+> #### *Generation 10 Using Stochastic universal sampling*
+	
+After about 10 generations we can see that most agents seem to have figured out that they need to eat the food,
+there was also a large improvement in their ability to survive as long as possible, 
+but we can also see that some agents havent quite figured it out yet. 
+For a simple task like this, tournament selection could be a better choice.
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/SUSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+	
+	
+> #### *Generation 3 Using tournament selection*
+
+We can see that using tournament selection as good as all agents have a general idea of what to do, 
+they are also able to outprform the agents using Stochastic universal sampling,
+but we can noticably see a decrease in variation of the agents, which is one of the reasons its not often used for more complex problems.
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/TSFoodGen3.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+
+	
+> #### *Generation 10 Using fitness proportionate selection*
+
+And lastly using fitness proportionate selection, we can see that this is a situation where this type of selects lacks compentence
+due to it being too random, as member of the population has a really large fitness in comparison with other members.
+And thus the chances are that this one will not be included in the next generation, preventing it form evolving as quickly as the other methods.
+Note however that this isn't always the case due to it being random it can slo have good performance but 
+whether or not it will be good in a situation like this is random.
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/FPSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+
+***Navigation Task Results***
+---
+	
+> #### *Generation 1*
+
+In the first few generation we can see that our agents have no clue at all of what they're doing and lots of them are just plainly running in to walls,
+in some of the first iterations they even managed to clip trough walls, however all these agents die as theres nothing behind the walls.
+
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/FPSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+	
+An example of a generation where they managed to clip trough walls
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/FPSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+
+> #### *Generation 10*
+
+We can see that after 10 generations most of our agents are still bumping in to lots of walls, 
+but we can also see that some agents are starting to get a bit of a sense of their environment
+	
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/FPSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+
+> #### *Generation 15*
+
+5 generations later we see some improvement, they are just circeling around anymore but also start to explore different areas of the map, 
+but this still isn't very good looking.
+	
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/FPSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+	
+> #### *Generation 40*
+	
+After 40 generation we can see the agents learnt a new strategy, that includes moving slower in order to hit less walls.
+We can see that some of the agents have come up with a wandering style of exploring the environment while still taking in to account where the walls are.
+Still this isn't the best, looking back at it it would have probably been better to start with an easier to navigate environment or have a clearer goal.
+	
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/FPSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+	
+***Combat Task Results***
+---
+
+For the combat task I placed all agents in an open area where they are free to move how they like and shoot whenever they want, 
+the enemy is trimmed to the size of the map and going out of the map on the once side will result on coming back in on the other side.
+Hitting and enemy will be largely positivly renforced as this does not happen often and missing will be slightly negatively renforced as this happens often.
+Do note that even tho it seems as they can shoot infintly far only hits when the enemy was in the view range are counted as actual hits, 
+this is to prvent renforcing hit that happen by sheer luck.
+
+In early generations we can see that some agents are starting to undestand that they should follow the enemy 
+and aim at it but they still miss most of their shots.
+
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/FPSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+	
+As training 50 agents at once shooting is a bit messy to look at i have also taken the best agent out of one of the generations.
+Here we can see that the agent already learned to shoot at the enemy, only it does not know when to stop shooting 
+and when there no enemy nearby it will also start shooting at random.
+
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/FPSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+
+After lots of generations we can see that they stop shooting at random all the time and start to shoot more selectively,
+we can also see that theres clearly being aimed at the enemy and it gets hit often.
+	
+<img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/FPSFoodGen10.gif?raw=true" alt="Gen 1 Using SUS" width="50%" height="50%"><br>
+
+***Combined Task Results***
+---
+
+When combining both tasks we can see that the agents will wander untill they see the enemy, once they spot him they will shoot and approach him.
+While still a large part of the agents miss shots and those that can't find the enemy get a bit clueless at times, 
+those that do manage to get the enemy in their view will hit a lare part of thier shots.
+	
+
+	
+***Conclusion***
+---
+	
+
+
 <br>
 
 [Back to top](#readme)
