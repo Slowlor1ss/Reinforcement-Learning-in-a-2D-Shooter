@@ -2,11 +2,11 @@
 
 # Reinforcement-Learning-in-a-2D-Shooter
 
-[Introduction](#Introduction)
-[about reinforcement learning and genetic algorithms](#More about reinforcement learning and genetic algorithms)
-[Method](#Method)
-[Result](#Result)
-[Conclusion](#Conclusion)
+[Introduction](#Introduction)<br>
+[about reinforcement learning and genetic algorithms](#More_about_reinforcement_learning_and_genetic_algorithms)<br>
+[Method](#Method)<br>
+[Result](#Result)<br>
+[Conclusion](#Conclusion)<br>
 
 <br>
 
