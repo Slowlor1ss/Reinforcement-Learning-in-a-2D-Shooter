@@ -34,22 +34,29 @@ And the second task being the combat aspect.<br>
 **More about reinforcement learning and genetic algorithms**
 ---
 ### Reinforcement Learning
-RL is a machine learning technique where an agent learns trough experience. The agents preforms an action within <br>
-an environment, which is interpreted into a reward and a representation of the state, which are then criticized <br>
-trough negative and positive rewards based on a reward function from within the program, to tell the agent <br>
-how good its action was and how it should should adjust accordingly. <br>
+RL is a machine learning technique where an agent learns through experience. The agents perform an action within an environment. <br>
+This is then interpreted into a reward and a representation of the state, <br>
+which is then criticized through negative and positive reward - based on a reward system within the program - <br>
+in order to tell the agent how good its action was and how it should adjust accordingly <br>
 Today there are several RL algorithms including TD, Q-learning, and Saras. My AI is trained using Q-learning. <br>
 The main purpose of all the algorithms is to find an optimal policy. The policy is a mapping between states and actions,<br>
-it provides the path the agents should follow to maximize the reward function. This is simillar to processes that occur in nature; <br>
-For example our brains are hard wired to interpret signals such as pain and hunger as negative renforcements, <br>
-and pleasure and food as positive onces, and this is exactly how our RL agent works. When our agent eats <br>
-it will be rewarded for taking that action, but when our agent suffers from hunger, <br>
-it will die and will be punished for its most resent actions which will include not eating.<br>
+it provides the path the agents should follow to maximize the reward function. This is similar to processes that occur in nature. <br>
+For example, our brains are hard-wired to interpret signals such as pain and hunger as negative reinforcements, <br>
+and pleasure and food as positive ones, and this is exactly how our RL agent works. <br>
+When our agent eats it will be rewarded for taking that action, <br>
+but when our agent suffers from hunger, it will die and will be punished for <br>
+its most recent actions which will include not eating.<br>
 
 ---
 
 ### Genetic Algorithms
-GA is a type of optimization algorithm based on natural selection, Genetic algorithms is one branch of the larger class evolutionary algorithms (EA). They imitate the biological processes of reproduction and natural selection to solve for the ‘fittest’ solutions. Like in evolution, many of the processes involve randomness, however GA allows one to set the level of randomization and the level of control. They raquire no extra information about the given problem, this allows them to find solutions to problems that other optimization methods cannot<br>
+GA is a type of optimization algorithm based on natural selection, Genetic algorithms is one branch <br>
+of the larger class evolutionary algorithms (EA). <br>
+They imitate the biological processes of reproduction and natural selection to solve for the ‘fittest’ solutions. <br>
+Like in evolution, many of the processes involve randomness, however <br>
+GA allows one to set the level of randomization and the level of control. <br>
+They raquire no extra information about the given problem, this allows them to find <br>
+solutions to problems that other optimization methods cannot<br>
 handle due to lack of continuity, linearity, or other.<br>
 GA work by starting from an initial generation that is then evaluated trough a user defined function. From there subsequent generations<br>
 will be generated trough [***selection***](#selection), [***crossover***](#crossover), and [***mutation***](#mutation).<br>
@@ -208,11 +215,11 @@ if thy're low it should be lower.
 **Method**
 ---
 As mentiond previously I decide to split up the task in to 2 tasks; A navigation task and a Combat task.<br>
-The layout of the environment for both tasks stays the same but the equipment inside changes depending on the task,<br>
+The layout of the environment for both tasks changes depending on the task,<br>
 The RL algorithm that I used is simplified version Q-Learning as it does not require a model of the environment, and it can handle problems with<br>
-transitions and rewards without requiring adaptations. Our agent has 2*16 input nodes each one corresponding to one ray,<br>
-16 rays for looking for food or enemies, and 16 for sensing the surrounding environment with <br>
-a viewangle between -45 and +45 degrees and a viewrange of 50 pixels.<br>
+transitions and rewards without requiring adaptations. Our agent has 3 times 8 input nodes each one corresponding to one ray,<br>
+8 rays for looking for food or enemies, 8 for sensing the surrounding environment with, and 8 for accelerating and deccelerating <br>
+a view-angle between -45 and +45 degrees and a viewrange of 50 pixels.<br>
 In total these return 11 output nodes returning an rotation value between -pi and +pi.<br>
 
 <br>
