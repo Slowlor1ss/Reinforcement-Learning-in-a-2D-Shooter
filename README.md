@@ -43,19 +43,19 @@ The main purpose of all the algorithms is to find an optimal policy. The policy 
 it provides the path the agents should follow to maximize the reward function. This is similar to processes that occur in nature. <br>
 For example, our brains are hard-wired to interpret signals such as pain and hunger as negative reinforcements, <br>
 and pleasure and food as positive ones, and this is exactly how our RL agent works. <br>
-When our agent eats it will be rewarded for taking that action, <br>
-but when our agent suffers from hunger, it will die and will be punished for <br>
-its most recent actions which will include not eating.<br>
+When our agent eats, it will be rewarded for taking that action, but when our agent <br>
+suffers from hunger, it will die and be punished for its most <br>
+recent actions - which will include not eating.<br>
 
 ---
 
 ### Genetic Algorithms
-GA is a type of optimization algorithm based on natural selection, Genetic algorithms is one branch <br>
+GA is a type of optimization algorithm based on natural selection. Genetic algorithms is one branch <br>
 of the larger class evolutionary algorithms (EA). <br>
 They imitate the biological processes of reproduction and natural selection to solve for the ‘fittest’ solutions. <br>
 Like in evolution, many of the processes involve randomness, however <br>
 GA allows one to set the level of randomization and the level of control. <br>
-They raquire no extra information about the given problem, this allows them to find <br>
+They require no extra information about the given problem, this allows them to find <br>
 solutions to problems that other optimization methods cannot<br>
 handle due to lack of continuity, linearity, or other.<br>
 GA work by starting from an initial generation that is then evaluated trough a user defined function. From there subsequent generations<br>
