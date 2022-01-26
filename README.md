@@ -9,8 +9,6 @@
 - [Conclusion](#Conclusion)<br>
 - [Sources](#Sources)<br>
 
-<br>
-
 **Introduction**
 ---
 While it has been done before, there has been less research in the application of reinforcement learning (RL) to <br>
