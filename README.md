@@ -470,4 +470,21 @@ I am genuinely excited to witness the progressions.<br>
 
 <br>
 
+***Sources***
+---
+	
+<br>
+	
+file:///C:/Users/laure/AppData/Local/Temp/Selection%20Methods%20of%20Genetic%20Algorithms.pdf<br>
+https://www.tutorialspoint.com/genetic_algorithms/genetic_algorithms_parent_selection.htm<br>
+https://www.geeksforgeeks.org/crossover-in-genetic-algorithm/<br>
+https://en.wikipedia.org/wiki/Genetic_algorithm<br>
+https://www.tutorialspoint.com/genetic_algorithms/genetic_algorithms_crossover.htm<br>
+https://www.whitman.edu/Documents/Academics/Mathematics/2014/carrjk.pdf<br>
+https://www.aaai.org/Papers/AIIDE/2008/AIIDE08-013.pdf<br>
+https://neuro.cs.ut.ee/wp-content/uploads/2018/02/2d_racing.pdf<br>
+https://en.wikipedia.org/wiki/Reinforcement_learning<br>
+	
+<br>
+	
 [Back to top](#readme)
