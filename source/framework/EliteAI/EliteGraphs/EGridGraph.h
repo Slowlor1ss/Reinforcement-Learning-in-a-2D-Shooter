@@ -250,7 +250,6 @@ namespace Elite
 		int idx = invalid_node_index;
 
 		//Added extra check since  c = int(pos.x / m_CellSize); => doesnt work correcly when out of the lower bounds
-		//TODO add grid start point
 		if (pos.x < 0 || pos.y < 0)
 		{
 			return idx;

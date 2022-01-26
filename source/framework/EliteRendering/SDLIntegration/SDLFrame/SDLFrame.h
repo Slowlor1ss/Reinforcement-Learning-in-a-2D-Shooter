@@ -11,7 +11,6 @@ namespace Elite
 	//Override the typedef with the correct type (by default void*)
 	typedef SDL_GLContext EliteRenderingContext;
 
-	//TODO temporarly Immediate UI implementation in SubmitAndFlipFrame()
 	class EImmediateUI;
 
 	//SDL specific renderer

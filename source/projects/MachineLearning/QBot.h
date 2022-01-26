@@ -45,7 +45,7 @@ public:
 	FMatrix* GetBotBrain() { return &m_BotBrain; }
 	FMatrix GetRawBotBrain() { return m_BotBrain; }
 	float GetAge() const { return m_Age; }
-	float GetFoodEaten() const { return m_FoodEaten; }
+	int GetFoodEaten() const { return m_FoodEaten; }
 
 	//void SetBotBrain(const FMatrix& brain) { m_BotBrain.Set(brain); }
 	void SetBotBrain(const FMatrix* brain) { m_BotBrain.Set(brain); }
@@ -82,7 +82,6 @@ private:
 	std::vector<NavigationColliderElement*> m_vNavigationColliders;
 	float m_Radius;
 
-	Vector2 m_Location; //TODO: maybe remove location and use get position
 	Vector2 m_StartLocation;
 	float m_Angle;
 	float m_FOV;

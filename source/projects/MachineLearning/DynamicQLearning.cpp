@@ -10,6 +10,8 @@
 
 DynamicQLearning::DynamicQLearning(int nrOfFood, int memorySize, int nrOfInputs, int nrOfOutputs, bool bias)
 	: m_pPopulation(new Population(50, m_TrimWorldSize, nrOfFood, memorySize, nrOfInputs, nrOfOutputs, bias))
+	, m_Enemy(nullptr)
+	, m_Wander(nullptr)
 {
 	if (SettingsRL::m_TrainShooting)
 	{
@@ -44,5 +46,6 @@ void DynamicQLearning::Update(const float deltaTime) const
 void DynamicQLearning::Render(const float deltaTime) const
 {
 	m_pPopulation->Render(deltaTime);
-	m_Enemy->Render(deltaTime);
+	if (SettingsRL::m_TrainShooting)
+		m_Enemy->Render(deltaTime);
 }

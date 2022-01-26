@@ -125,7 +125,7 @@ namespace Elite
 			}
 		}
 		while (!(graphCopy->GetNodeConnections(currentNode).empty() && nodeStack.empty()));
-		//TODO: maybe need to add the first node of the path at the end of the path again
+		
 		//see bottom page: http://www.graph-magics.com/articles/euler.php
 		path.push_back(currentNode);
 		

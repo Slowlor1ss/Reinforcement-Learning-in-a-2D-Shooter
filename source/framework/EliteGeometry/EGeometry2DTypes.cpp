@@ -259,7 +259,7 @@ const std::vector<Elite::Triangle*>& Elite::Polygon::Triangulate()
 	//Check winding
 	OrientateWithChildren(Winding::CCW);
 
-	//TODO: CHECK FOR OVERLAPPING POLYGONS AND MERGE WHEN REQUIRED
+	//CHECK FOR OVERLAPPING POLYGONS AND MERGE WHEN REQUIRED
 	for (auto child : m_vChildren)
 	{
 		//Check for overlap, if so merge, create new child and remove old ones!

@@ -80,7 +80,6 @@ namespace Elite
 			//Update timer
 			m_TimeSinceLastPropagation += deltaTime;
 		}
-		// TODO: implement
 	}
 
 	template <class T_GraphType>

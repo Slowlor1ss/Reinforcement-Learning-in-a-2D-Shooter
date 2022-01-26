@@ -17,8 +17,8 @@ namespace Elite
 	{
 	private:
 		float* m_Data;
-		int m_Rows, m_Columns;
-		int m_Size;
+		int m_Rows{}, m_Columns{};
+		int m_Size{};
 		int rcToIndex(int r, int c) const
 		{
 			return c * m_Rows + r;

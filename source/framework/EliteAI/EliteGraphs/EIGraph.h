@@ -19,7 +19,7 @@ namespace Elite
 	public:
 		// shorthand typedefs
 		using NodeVector = std::vector<T_NodeType*>;
-		using ConnectionList = std::list<T_ConnectionType*>; // TODO: function definition doesn't recognize this?
+		using ConnectionList = std::list<T_ConnectionType*>;
 		using ConnectionListVector = std::vector<ConnectionList>;
 
 	public:
@@ -53,7 +53,7 @@ namespace Elite
 		void SetConnectionCost(int from, int to, float cost);
 
 		int GetNrOfNodes() const { return m_Nodes.size(); }
-		int GetNrOfActiveNodes() const; // TODO: add comment
+		int GetNrOfActiveNodes() const;
 		int GetNrOfConnections() const;
 		bool IsDirectionalGraph() const { return m_IsDirectionalGraph; }
 		bool IsEmpty() const { return m_Nodes.empty(); }

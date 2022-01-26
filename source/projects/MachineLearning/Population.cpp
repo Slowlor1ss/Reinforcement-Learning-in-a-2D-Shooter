@@ -304,7 +304,7 @@ void Population::Render(const float deltaTime) const
 			if (!m_ShowAllFood)
 				continue;
 
-			for (const auto pFood : m_Foodstuff[i]) //TODO: only render one iteration of food as they have the same location maybe
+			for (const auto pFood : m_Foodstuff[i])
 				pFood->Render();
 		}
 	}

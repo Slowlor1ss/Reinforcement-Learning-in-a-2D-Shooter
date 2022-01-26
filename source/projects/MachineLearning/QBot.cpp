@@ -17,7 +17,7 @@ QBot::QBot(float x,
            int nrOutputs,
            bool useBias,
            float radius) : BaseAgent(radius),
-   m_Radius(radius), m_Location(x, y), m_StartLocation(x, y), m_Angle(angle), m_FOV(fov),
+   m_Radius(radius), m_StartLocation(x, y), m_Angle(angle), m_FOV(fov),
    //m_AliveColor(randomFloat(), randomFloat(), randomFloat()),
    m_SFOV(sFov),
    m_AliveColor(0, 0.6f, 0.4f),
@@ -70,15 +70,22 @@ QBot::QBot(float x,
 		m_StateMatrixMemoryArr[i].Resize(1, m_NrOfInputs + (m_UseBias ? 1 : 0));
 		m_ActionMatrixMemoryArr[i].Resize(1, m_NrOfOutputs);
 	}
+
 	//m_BotBrain.Randomize(-1.0f, 1.0f);
-	m_BotBrain.parseFile("../ReadMatrix.txt");
+	if (SettingsRL::m_TrainNavigation && SettingsRL::m_TrainShooting)
+		m_BotBrain.parseFile("resources/Combined.txt");
+	else if(SettingsRL::m_TrainNavigation)
+		m_BotBrain.parseFile("resources/Navigation.txt");
+	else if(SettingsRL::m_TrainShooting)
+		m_BotBrain.parseFile("resources/Shooting.txt");
+
 	if (m_UseBias) {
 		m_BotBrain.SetRowAll(m_NrOfInputs, -10.0f);
 	}
 
 	//m_BotBrain.Print();
 
-	SetPosition(m_Location);
+	SetPosition({x,y});
 }
 
 QBot::~QBot()
@@ -158,7 +165,7 @@ void QBot::UpdateBot(Vector2 enemyPos, const Vector2 dir, const float deltaTime)
 
 	const Vector2 newDir(cos(m_Angle), sin(m_Angle));
 	SetPosition(GetPosition() + newDir * dSpeed * deltaTime);
-	m_Location = GetPosition();
+	const Vector2& location = GetPosition(); //create alias for get position
 	SetRotation(m_Angle);
 
 	if (SettingsRL::m_TrainShooting)
@@ -173,7 +180,7 @@ void QBot::UpdateBot(Vector2 enemyPos, const Vector2 dir, const float deltaTime)
 			//only count a hit when the enemy was visible and it was a hit
 			if(GetPosition().DistanceSquared(enemyPos) < Elite::Square(m_MaxDistance))
 			{
-				if (!m_IsEnemyBehindWall && AreEqual(AngleBetween(dir, enemyPos - m_Location), 0.f, 0.05f))
+				if (!m_IsEnemyBehindWall && AreEqual(AngleBetween(dir, enemyPos - location), 0.f, 0.05f))
 				{
 					Reinforcement(m_PositiveQBig * 10, m_MemorySize);
 					++m_EnemiesHit;
@@ -194,9 +201,11 @@ void QBot::UpdateBot(Vector2 enemyPos, const Vector2 dir, const float deltaTime)
 
 void QBot::UpdateEnemy(const Vector2 enemyPos, const Vector2 dir, const float angleStep, const float speedStep)
 {
+	const Vector2& location = GetPosition(); //create alias for get position
+
 	const Vector2& enemyLoc{ enemyPos };
-	Vector2 enemyVector = enemyLoc - (m_Location - dir * 10);
-	const float dist = (enemyLoc - m_Location).Magnitude();
+	Vector2 enemyVector = enemyLoc - (location - dir * 10);
+	const float dist = (enemyLoc - location).Magnitude();
 	if (dist > m_MaxDistance) {
 		return;
 	}
@@ -208,7 +217,7 @@ void QBot::UpdateEnemy(const Vector2 enemyPos, const Vector2 dir, const float an
 		m_IsEnemyBehindWall = false;
 		for (size_t i{ 4 }; i < m_vNavigationColliders.size(); ++i)
 		{
-			if (m_vNavigationColliders[i]->Intersection(m_Location, enemyLoc))
+			if (m_vNavigationColliders[i]->Intersection(location, enemyLoc))
 			{
 				m_IsEnemyBehindWall = true;
 				break;
@@ -230,12 +239,14 @@ void QBot::UpdateEnemy(const Vector2 enemyPos, const Vector2 dir, const float an
 
 void QBot::UpdateNavigation(const Vector2& dir, const float& angleStep, const float& speedStep, float deltaTime)
 {
+	const Vector2& location = GetPosition(); //create alias for get position
+
 	bool StayedAwayFromWalls{ true };
 	bool NoWallsInFov{ true };
 	for (const auto obstacle : m_vNavigationColliders)
 	{
-		Vector2 obstacleVector = obstacle->GetClosestPoint(m_Location) - (m_Location - dir * 10);
-		const float dist = obstacle->DistancePointRect(m_Location);
+		Vector2 obstacleVector = obstacle->GetClosestPoint(location) - (location - dir * 10);
+		const float dist = obstacle->DistancePointRect(location);
 		if (dist > m_MaxDistance) {
 			continue;
 		}
@@ -311,14 +322,16 @@ void QBot::UpdateNavigation(const Vector2& dir, const float& angleStep, const fl
 
 void QBot::UpdateFood(std::vector<Food*>& foodList, const Vector2& dir, const float& angleStep)
 {
+	const Vector2& location = GetPosition(); //create alias for get position
+
 	bool cameClose = false;
 	for (Food* food : foodList) {
 		if (food->IsEaten()) {
 			continue;
 		}
 		Vector2 foodLoc = food->GetLocation();
-		Vector2 foodVector = foodLoc - (m_Location - dir * 10);
-		const float dist = (foodLoc - m_Location).Magnitude();
+		Vector2 foodVector = foodLoc - (location - dir * 10);
+		const float dist = (foodLoc - location).Magnitude();
 		if (dist > m_MaxDistance) {
 			continue;
 		}
@@ -330,7 +343,7 @@ void QBot::UpdateFood(std::vector<Food*>& foodList, const Vector2& dir, const fl
 			bool isBehindWall{ false };
 			for (size_t i{ 4 }; i < m_vNavigationColliders.size(); ++i)
 			{
-				if (m_vNavigationColliders[i]->Intersection(m_Location, foodLoc))
+				if (m_vNavigationColliders[i]->Intersection(location, foodLoc))
 				{
 					isBehindWall = true;
 					break;
@@ -374,6 +387,8 @@ void QBot::UpdateFood(std::vector<Food*>& foodList, const Vector2& dir, const fl
 }
 
 void QBot::Render(float deltaTime) {
+	const Vector2& location = GetPosition(); //create alias for get position
+
 	//Elite::Vector2 dir(cos(m_Angle), sin(m_Angle));
 	Vector2 dir(cos(GetRotation()), sin(GetRotation()));
 	//Elite::Vector2 leftVision(cos(m_Angle + m_FOV / 2), sin(m_Angle + m_FOV / 2));
@@ -390,58 +405,58 @@ void QBot::Render(float deltaTime) {
 	//Color dirRayColor = {0, 1, 0};
 	////DEBUGRENDERER2D->DrawSolidCircle(m_Location, 2, dir, c);
 	//if (m_Alive) {
-	DEBUGRENDERER2D->DrawSegment(m_Location, m_Location + 10 * dir, rayColor);
+	DEBUGRENDERER2D->DrawSegment(location, location + 10 * dir, rayColor);
 	//	//DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * leftVision, rayColor);
 	//	//DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * rightVision, rayColor);
 	//}
-	////#ifdef _DEBUG
-	//	const float angleStep = m_FOV / (m_NrOfInputs / 2);
-	//	for (int i = 0; i < m_NrOfInputs/2 + 1; ++i)
-	//	{
-	//		Elite::Vector2 vision(cos((m_Angle + m_FOV / 2)-angleStep*i), sin((m_Angle + m_FOV / 2)-angleStep*i));
-	//		DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * vision, rayColor);
-	//	}
-	//
-	//	//The angle its moving towards
-	//	int r, cAngle, cSpeed;
-	//	m_ActionMatrixMemoryArr[currentIndex].Max(r, cAngle, 0, (m_NrOfOutputs / 2) - 1);
-	//	m_ActionMatrixMemoryArr[currentIndex].Max(r, cSpeed, m_NrOfOutputs / 2, m_NrOfOutputs);
-	//	//range goes from m_NrOfOutputs/2 to m_NrOfOutputs so the size is = to m_NrOfOutputs/2
-	//	//but our value is m_NrOfOutputs/2 + the index we want
-	//	cSpeed -= m_NrOfOutputs / 2;
-	//
-	//	const float dSpeed = m_SSpeed.Get(0, cSpeed);
-	//	const float dAngle = m_SAngle.Get(0, cAngle);
-	//
-	//	const Vector2 dDir(cos(dAngle), sin(dAngle));
-	//	//DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * dDir, dirRayColor);
-	//
-	//	DEBUGRENDERER2D->DrawString(m_Location, to_string(static_cast<int>(m_Health)).c_str());
-	//
-	//
-	//	//if (m_Alive) {
-	//	//	for (Food* f : m_Visible) {
-	//	//		Vector2 loc = f->GetLocation();
-	//	//		DEBUGRENDERER2D->DrawCircle(loc, 2, color, 0.5f);
-	//	//	}
-	//	//}
-	//
-	//	// draw the vision
-	//	for (int i = 0; i < m_NrOfInputs; ++i)
-	//	{
-	//
-	//		if (m_StateMatrixMemoryArr[currentIndex].Get(0, i) > 0.0f) {
-	//			DEBUGRENDERER2D->DrawSolidCircle(m_Location - 2.5 * dir - perpDir * 2.0f * (i - m_NrOfInputs / 2.0f), 1, perpDir, m_AliveColor);
-	//		}
-	//		else {
-	//			DEBUGRENDERER2D->DrawSolidCircle(m_Location - 3.0 * dir - perpDir * 2.0f * (i - m_NrOfInputs / 2.0f), 1, perpDir, m_DeadColor);
-	//		}
-	//	}
-	//
-	//	char age[10];
-	//	snprintf(age, 10, "%.1f seconds", m_Age);
-	//	DEBUGRENDERER2D->DrawString(m_Location + m_MaxDistance * dir, age);
-	////#endif
+	#ifdef _DEBUG
+		const float angleStep = m_FOV / (m_NrOfInputs / 2);
+		for (int i = 0; i < m_NrOfInputs/2 + 1; ++i)
+		{
+			Elite::Vector2 vision(cos((m_Angle + m_FOV / 2)-angleStep*i), sin((m_Angle + m_FOV / 2)-angleStep*i));
+			DEBUGRENDERER2D->DrawSegment(location - 10 * dir, location + m_MaxDistance * vision, rayColor);
+		}
+	
+		//The angle its moving towards
+		int r, cAngle, cSpeed;
+		m_ActionMatrixMemoryArr[currentIndex].Max(r, cAngle, 0, (m_NrOfOutputs / 2) - 1);
+		m_ActionMatrixMemoryArr[currentIndex].Max(r, cSpeed, m_NrOfOutputs / 2, m_NrOfOutputs);
+		//range goes from m_NrOfOutputs/2 to m_NrOfOutputs so the size is = to m_NrOfOutputs/2
+		//but our value is m_NrOfOutputs/2 + the index we want
+		cSpeed -= m_NrOfOutputs / 2;
+	
+		const float dSpeed = m_SSpeed.Get(0, cSpeed);
+		const float dAngle = m_SAngle.Get(0, cAngle);
+	
+		const Vector2 dDir(cos(dAngle), sin(dAngle));
+		//DEBUGRENDERER2D->DrawSegment(m_Location - 10 * dir, m_Location + m_MaxDistance * dDir, dirRayColor);
+	
+		DEBUGRENDERER2D->DrawString(location, to_string(static_cast<int>(m_Health)).c_str());
+	
+	
+		//if (m_Alive) {
+		//	for (Food* f : m_Visible) {
+		//		Vector2 loc = f->GetLocation();
+		//		DEBUGRENDERER2D->DrawCircle(loc, 2, color, 0.5f);
+		//	}
+		//}
+	
+		// draw the vision
+		//for (int i = 0; i < m_NrOfInputs; ++i)
+		//{
+	
+		//	if (m_StateMatrixMemoryArr[currentIndex].Get(0, i) > 0.0f) {
+		//		DEBUGRENDERER2D->DrawSolidCircle(location - 2.5 * dir - perpDir * 2.0f * (i - m_NrOfInputs / 2.0f), 1, perpDir, m_AliveColor);
+		//	}
+		//	else {
+		//		DEBUGRENDERER2D->DrawSolidCircle(location - 3.0 * dir - perpDir * 2.0f * (i - m_NrOfInputs / 2.0f), 1, perpDir, m_DeadColor);
+		//	}
+		//}
+	
+		char age[10];
+		snprintf(age, 10, "%.1f seconds", m_Age);
+		DEBUGRENDERER2D->DrawString(location + m_MaxDistance * dir, age);
+	#endif
 }
 
 bool QBot::IsAlive() const
@@ -458,7 +473,6 @@ void QBot::Reset()
 	m_EnemiesHit = 0;
 
 	m_Age = 0;
-	m_Location = m_StartLocation;
 	SetPosition(m_StartLocation);
 
 
@@ -501,7 +515,6 @@ void QBot::Reinforcement(const float factor, const int memory) const
 	// go back in time, and reinforce (or inhibit) the weights that led to the right/wrong decision.
 	m_DeltaBotBrain.SetAll(0);
 
-	//TODO: clean this up
 #pragma push_macro("disable_min")
 #undef min
 	const int min = std::min(m_MemorySize, memory);

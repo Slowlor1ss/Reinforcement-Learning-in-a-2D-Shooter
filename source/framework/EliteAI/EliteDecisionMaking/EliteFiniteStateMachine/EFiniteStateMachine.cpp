@@ -27,16 +27,16 @@ void Elite::FiniteStateMachine::AddTransition(Elite::FSMState* startState, Elite
 
 void Elite::FiniteStateMachine::Update(float deltaTime)
 {
-    //TODO 4: Look if 1 or more transition exists for the current state that we are in
+    //Look if 1 or more transition exists for the current state that we are in
     //Tip: Check the transitions map for a TransitionState pair
     auto it = m_Transitions.find(m_pCurrentState);
-    //TODO 5: if a TransitionState exists
+    //if a TransitionState exists
     if (it != m_Transitions.end())
     {
-        //TODO 6: Loop over all the TransitionState pairs 
+        // Loop over all the TransitionState pairs 
 	    for (auto& transPair : it->second)
 	    {
-	        //TODO 7: If a ToTransition returns true => transition to the new corresponding state
+	        //If a ToTransition returns true => transition to the new corresponding state
 		    if (transPair.first->ToTransition(m_pBlackboard))
 		    {
                 ChangeState(transPair.second);
@@ -45,7 +45,7 @@ void Elite::FiniteStateMachine::Update(float deltaTime)
 	    }
     }
 
-    //TODO 8: Update the current state (if one exists ;-))
+    //Update the current state (if one exists ;-))
     if (m_pCurrentState)
         m_pCurrentState->Update(m_pBlackboard, deltaTime);
 }
@@ -57,16 +57,16 @@ Elite::Blackboard* Elite::FiniteStateMachine::GetBlackboard() const
 
 void Elite::FiniteStateMachine::ChangeState(FSMState* newState)
 {
-    //TODO 1. If currently in a state => make sure the OnExit of that state gets called
+    //If currently in a state => make sure the OnExit of that state gets called
     if (m_pCurrentState)
     {
         m_pCurrentState->OnExit(m_pBlackboard);
     }
 
-    //TODO 2. Change the current state to the new state
+    //Change the current state to the new state
     m_pCurrentState = newState;
 
-    //TODO 3. Call the OnEnter of the new state
+    //Call the OnEnter of the new state
     if (m_pCurrentState)
     {
         m_pCurrentState->OnEnter(m_pBlackboard);
