@@ -219,14 +219,14 @@ As mentioned previously, I decided to split up the tasks into two; a navigation 
 The layout of the environment for both tasks changes depending on the task.<br>
 The RL algorithm that I used is a simplified version Q-Learning as it does not require a model of the environment, and it can handle problems with<br>
 transitions and rewards without requiring adaptations. Our agent has 3 times 8 input nodes each one corresponding to one ray.<br>
-8 Rays for looking for food or enemies, 8 for sensing the surrounding environment with, and 8 for accelerating and deaccelerating <br>
-A view-angle between -45 and +45 degrees and a viewrange of 50 pixels.<br>
+8 Rays for looking for food or enemies, 8 for sensing the surrounding environment with, and 8 for accelerating and deaccelerating.<br>
+A view-angle between -45 and +45 degrees and a view range of 50 pixels.<br>
 In total these return 11 output nodes returning an rotation value between -pi and +pi.<br>
 
 <br>
-For the GA, (as previously explained) I decided to use stochastic Selection <br>
-as this one allowed enough variation while disallowing the fittest agents to saturate <br>
-from one generation to another. Uniform crossover, and a mutation rate of 1% and amplitude of 3%.<br>
+For the GA (as previously explained), I decided to use the Stochastic Selection - as this one allowed enough<br>
+variation while hindering the fittest agents to saturate from one generation to the next. <br>
+Uniform crossover, and a mutation rate of 1% and amplitude of 3%.<br>
 
 <br>	
 
@@ -238,8 +238,8 @@ while also picking up food items.<br>
 	
 ### Setup
 
-The test environment is a square of 140 x 140 pixels. The map is surrounded by walls so that the agent is locked inside of the map,<br>
-within there's a total of 50 food spawnpoints and 8 obstacles within the map, the agent cannot move or look trough these walls.<br>
+The test environment is a square of 140 x 140 pixels. The map is surrounded by walls so that the agent is locked inside of the map.<br>
+Within there's a total of 50 food spawnpoints and 8 obstacles within the map, the agent cannot move or look trough these walls.<br>
 Figure 1 shows an image of the map.<br>
 
 <p align="center">
@@ -253,10 +253,10 @@ The sensors range from 45 degrees to the left to 45 degrees to the right.<br>
 The first 8 sensors were used to determine if the was food in the view of the bot.<br>
 Then the distance to that food object is calculated and inverted, the inverted distance is saved<br>
 in the memory matrix of our RL agent. <br>
-We save the inverted distance cause we only have one memory matrix and want the closest food to have the most impact<br>
-this means that if our food is at the same position we are (distance = 0) our inverted distance = max view range,<br>
+We save the inverted distance cause we only have one memory matrix and want the closest food to have the most impact.<br>
+This means that if our food is at the same position we are (distance = 0) our inverted distance = max view range,<br>
 because of how matrix multiplication work this makes it easier while working with one memory matrix.<br>
-Our second 16 sensors are used to determine if there are any obstacles in the agents vision,<br>
+Our second 8 sensors are used to determine if there are any obstacles in the agents vision,<br>
 also for these objects we calculate the distance and then check how far this obstacle is,<br>
 When the obstacle is far away from out agent we reward it with with a small reward of 0.0001.<br>
 If an obstacle was close to our agent we give it a penalty of -0.1, and when theres no<br>
