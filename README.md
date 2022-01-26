@@ -55,10 +55,11 @@ of the larger class evolutionary algorithms (EA). <br>
 They imitate the biological processes of reproduction and natural selection to solve for the ‘fittest’ solutions. <br>
 Like in evolution, many of the processes involve randomness, however <br>
 GA allows one to set the level of randomization and the level of control. <br>
-They require no extra information about the given problem, this allows them to find <br>
-solutions to problems that other optimization methods cannot<br>
-handle due to lack of continuity, linearity, or other.<br>
-GA work by starting from an initial generation that is then evaluated trough a user defined function. From there subsequent generations<br>
+TThey require no added information about the given issue. <br>
+This allows them to find solutions to problems that other optimization methods cannot handle due to <br>
+the lack of continuity, linearity or ect...<br>
+GA works by starting from an initial generation that is then evaluated through a used-defined function. <br>
+From there subsequent generations<br>
 will be generated trough [***selection***](#selection), [***crossover***](#crossover), and [***mutation***](#mutation).<br>
 
 <br>
@@ -95,7 +96,7 @@ Elite::FMatrix* Population::SelectParentFPS(const float sum) const
 ```
 </details>
 Fitness proportionate is the first type of selection that was introduced when genetic <br>
-algorithms were first being developed. It is also known as roulette wheel selection due to  <br>
+algorithms were first being developed. It is also known as 'roulette wheel selection' due to  <br>
 the similarity of selection it has with a physical roulette wheel.  <br>
 How it works is that for each element in the set it finds the sum  <br>
 from F<sub>0</sub> . . . F<sub>n</sub> and gives each element a chance  <br>
@@ -138,7 +139,7 @@ void Population::SelectParentSUS(const float sum) const
 }
 ```
 </details>
-Stochastic Selection is based upon the fitness proportional selection type; <br>
+Stochastic Selection is based upon the fitness proportional selection type.<br>
 However, it is made to be fairer. It uses a single random value to get<br>
 a sampling of all the agents by choosing them at evenly spaced intervals.<br>
 
@@ -160,7 +161,7 @@ of the agents has the best fitness, and chooses that one.<br>
 <br>
 
 After implementing and testing each of the techniques, I decided to go with<br>
-stochastic Selection as this one allowed enough variation while disallowing the fittest agents to saturate <br>
+stochastic Selection as this one allowed enough variation while preventing the fittest agents to saturate <br>
 from one generation to another. <br>
 	
 <br><br>
@@ -170,7 +171,7 @@ Crossover is a genetic operator used to give variation to the agents from one ge
 Crossover is sexual reproduction. Two agents are picked from the mating pool at random <br>
 to crossover in order to produce superior offspring.<br>
 <br>
-Also in crossover there are multiple methods you can apply to your algortihm<br>
+Also, in crossover there are multiple methods you can apply to your algorithm.<br>
 Some of the different types include:<br>
 <br>
 **Single Point Crossover**: Where one point on the parent organism is selected. <br>
@@ -201,22 +202,22 @@ Each bit is selected randomly from one of the corresponding genes of the parent 
 <br><br>	
 
 > #### *Mutation*
-In mutation we take a parent and two variables, the mutation rate; that determs how much of the agent we will mutate and <br>
-the muation-amplitude; that determens how much we will change that variable.<br>
+In mutation we take a parent and two variables, the mutation rate; that determines how much of the agent we will mutate and <br>
+the mutaion-amplitude; that determines how much we will change that variable.<br>
 Mutation allows GA to avoid falling in to local minima and helps them explore the solution space.<br>
 Mutation is done bit by bit, but the mutation rate can change. It can go from 0% to 100%. However, the mutation is typically<br>
 around 1%. Anything much higher, will introduce too much randomness, anything less, and you<br>
 don’t get enough and the sample tends to stagnate. I went with a mutation rate of 1% and amplitude of 3%.<br>
-However do keep in mind the number is also depended on your q-factors if you have high renforcement number then its should be higher<br>
-if thy're low it should be lower.
+However, do keep in mind the number is also depended on your q-factors. If you have  high reinforcement numbers then it should be higher;<br>
+if they're lower, it should be lower.<br>
 
 <br>
 
 **Method**
 ---
-As mentiond previously I decide to split up the task in to 2 tasks; A navigation task and a Combat task.<br>
-The layout of the environment for both tasks changes depending on the task,<br>
-The RL algorithm that I used is simplified version Q-Learning as it does not require a model of the environment, and it can handle problems with<br>
+As mentioned previously, I decided to split up the tasks into two; a navigation tast and a combat task.<br>
+The layout of the environment for both tasks changes depending on the task.<br>
+The RL algorithm that I used is a simplified version Q-Learning as it does not require a model of the environment, and it can handle problems with<br>
 transitions and rewards without requiring adaptations. Our agent has 3 times 8 input nodes each one corresponding to one ray,<br>
 8 rays for looking for food or enemies, 8 for sensing the surrounding environment with, and 8 for accelerating and deccelerating <br>
 a view-angle between -45 and +45 degrees and a viewrange of 50 pixels.<br>
