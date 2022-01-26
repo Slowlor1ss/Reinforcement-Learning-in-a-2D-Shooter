@@ -278,6 +278,27 @@ For the combat, tast 2 input nodes were added - this allowed the bot to decide w
 Whether or not the bot shoots is dependent on the output of the other sensors and whether the enemy is in sight.<br>
 	
 <br>
+
+Switching between these tasks is made easy by having a single struct that controlls various options.
+```c++
+struct SettingsRL
+{
+	//Settings
+	static constexpr bool m_TrainShooting{ true };
+	static constexpr bool m_TrainNavigation{ true };
+	static constexpr bool m_TrainMoveToItems{ false };
+
+	static constexpr bool m_RespawnFoodEachGen{ true };
+
+	enum class SelectionMethod
+	{
+		UseSUS, //Stochastic universal sampling
+		UseFPS, //Fitness proportionate selection
+		UseTS	//Tournament selection
+	};
+	static constexpr SelectionMethod m_SelectionMethod{ SelectionMethod::UseSUS };
+};
+```
 	
 **Result**
 ---
