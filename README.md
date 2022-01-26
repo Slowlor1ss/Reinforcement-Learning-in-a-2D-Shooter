@@ -403,10 +403,10 @@ Still this isn't the best, looking back at it - it would have probably been bett
 For the combat task I placed all agents in an open area where they are free to move how they like and shoot whenever they want.<br>
 The enemy is trimmed to the size of the map and going out of the map on the one side will result on coming back in on the other side.<br>
 Hitting and enemy will be largely positively reinforced as this does not happen often and missing will be slightly negatively reinforced as this happens often.<br>
-Do note that even though it seems as they can shoot infinitely far only the hits that are within the view range are counted as actual hits, <br>
-this is to prevent reinforcing hit that happen by sheer luck.<br>
+Do note that even though it seems as they can shoot infinitely far, only the hits that are within the view range are counted as actual hits.<br>
+This is to prevent reinforcing hits that happen by sheer luck.<br>
 
-In early generations we can see that some agents are starting to undestand that they should follow the enemy <br>
+In early generations we can see that some agents are starting to understand that they should follow the enemy <br>
 and aim at it but they still miss most of their shots.<br>
 </p>
 
@@ -414,7 +414,7 @@ and aim at it but they still miss most of their shots.<br>
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/ShootingMessy.gif?raw=true" width="50%" height="50%"><br>
 </p>
 	
-As training 50 agents at once shooting is a bit messy to look at i have also taken the best agent out of one of the generations.<br>
+As training 50 agents at once shooting is a bit messy to look at, I have also taken the best agent out of one of the generations.<br>
 Here we can see that the agent already learned to shoot at the enemy, only it does not know when to stop shooting <br>
 and when there no enemy nearby it will also start shooting at random.<br>
 
@@ -422,8 +422,8 @@ and when there no enemy nearby it will also start shooting at random.<br>
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/ShootingOneAgentEarlyGen.gif?raw=true" width="50%" height="50%"><br>
 </p>
 	
-After lots of generations we can see that they stop shooting at random all the time and start to shoot more selectively,<br>
-we can also see that theres clearly being aimed at the enemy and it gets hit often.<br>
+After lots of generations we can see that they stop shooting at random all the time and start to shoot more selectively.<br>
+We can also see that there's clearly being aimed at the enemy and it gets hit often.<br>
 
 <p align="center">
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/ShootingAfterManyGens.gif?raw=true" width="50%" height="50%"><br>
@@ -432,10 +432,12 @@ we can also see that theres clearly being aimed at the enemy and it gets hit oft
 ### Combined Task Results
 
 <br>
-When combining both tasks we can see that the agents will wander untill they see the enemy, once they spot him they will shoot and approach him.<br>
+When combining both tasks we can see that the agents will wander untill they see the enemy. Once they spot the enemy they will shoot and approach him.<br>
 While still a large part of the agents miss shots and those that can't find the enemy get a bit clueless at times, <br>
-those that do manage to get the enemy in their view will hit a lare part of thier shots.<br>
+those that do manage to get the enemy in their view will hit a large part of their shots.<br>
+	
 <br>
+	
 <p align="center">
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/Combined.gif?raw=true" width="50%" height="50%"><br>
 </p>
@@ -447,22 +449,23 @@ those that do manage to get the enemy in their view will hit a lare part of thie
 	
 <p>
 <br>
-The aim of this paper was to see how well I can use RL to learn a bot basic AI behaviours and how well it would preform in a 2d shooter,<br>
-and from my attempt I can conslude that basic AI behaviours aren't too hard to teach, but learning an agent how to properly navigate or explore<br>
-a map is a lot harder, I do believe that it is possible, if you have the rquired knowledge and time for it, <br>
-and when you do manage to do it properly i can see various advantages for using RL over rule-based systems such as;<br>
-minimal code needed for the underlying algorithm in some cases, decrease in the time spent tuning parameters for different situations, <br>
-and maybe the most promising, the ability to produce different bot personality types.<br>
-I'd say that teaching an agent how to properly explore a room was a bit too hard for <br>
-my low expirence when starting this project combined with the limited time, <br>
-it might have been better to start of simpler. However I did learn a lot about machine learning in general <br>
-and I have improved a lot, so therefore when I have time I might restart or contiue on this project and try to make something better.<br>
-Further work could be spent on trying different environmental setups with the same agents to see how well they preform in an unknown enviroment.<br>
-Some of the task have already been tested in different environmental setups like the searching for items and shooting an enemy as those setups where random.<br>
+The aim of this paper was to see how well I can use RL to learn a bot basic AI behaviours and how well it would perform in a 2d shooter.<br>
+From my attempt, I can conclude that basic AI behaviours aren't too hard to teach, but teaching an agent how to properly navigate or explore<br>
+a map is a lot harder. I do believe that it is possible, if you have the required knowledge and time for it.<br>
+When you do manage to do it properly, I can see various advantages for using Rl over rule-based systems such as;<br>
+- Minimal code needed for the underlying algorithm in some cases<br>
+- Decrease in the time spent tuning parameters for different situations<br>
+- The ability to produce different bot personality types <br>
+I'd say that teaching an agent how to explore a room was hard for <br>
+my low experience when starting this project - combined with the limited time.<br>
+It might have been better to start off simpler. However, I did learn a lot about machine learning in general <br>
+and I have improved dramatically. So therefore - when I have time - I might restart or continue on this project and try to make something better.<br>
+Further work could be spent on trying different environmental setups with the same agents to see how well they perform in an unknown environment.<br>
+Some of the tasks have already been tested in different environmental setups like the searching for items and shooting an enemy as those setups were random.<br>
 
-Whatever the future holds for RL in games I can't tell, <br>
-but I can confidently say that I see potential in it, and when you combine it with more convencial rule-based systems I believe you<br>
-can get better results than by only using these rule-based systems.<br>
+There is a clear future for RL in games, and the potential is limitless. <br>
+When you combine it with more conventional rule-based systems, the options are endless. <br>
+I am genuinely excited to witness the progressions.<br>
 </p>
 
 <br>
