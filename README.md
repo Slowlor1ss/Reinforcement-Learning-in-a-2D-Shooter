@@ -218,9 +218,9 @@ if they're lower, it should be lower.<br>
 As mentioned previously, I decided to split up the tasks into two; a navigation tast and a combat task.<br>
 The layout of the environment for both tasks changes depending on the task.<br>
 The RL algorithm that I used is a simplified version Q-Learning as it does not require a model of the environment, and it can handle problems with<br>
-transitions and rewards without requiring adaptations. Our agent has 3 times 8 input nodes each one corresponding to one ray,<br>
-8 rays for looking for food or enemies, 8 for sensing the surrounding environment with, and 8 for accelerating and deccelerating <br>
-a view-angle between -45 and +45 degrees and a viewrange of 50 pixels.<br>
+transitions and rewards without requiring adaptations. Our agent has 3 times 8 input nodes each one corresponding to one ray.<br>
+8 Rays for looking for food or enemies, 8 for sensing the surrounding environment with, and 8 for accelerating and deaccelerating <br>
+A view-angle between -45 and +45 degrees and a viewrange of 50 pixels.<br>
 In total these return 11 output nodes returning an rotation value between -pi and +pi.<br>
 
 <br>
@@ -248,7 +248,7 @@ Figure 1 shows an image of the map.<br>
 </p>
 
 <br>
-The RL bot is equipped with 3 times 8 sensors, 8 for item seeking, 8 looking at its surroundings and another 8 for accelerating and deccelerating, <br>
+The RL bot is equipped with 3 times 8 sensors, 8 for item seeking, 8 looking at its surroundings and another 8 for accelerating and deaccelerating, <br>
 The sensors range from 45 degrees to the left to 45 degrees to the right.<br>
 The first 8 sensors were used to determine if the was food in the view of the bot.<br>
 Then the distance to that food object is calculated and inverted, the inverted distance is saved<br>
