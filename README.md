@@ -255,7 +255,7 @@ in the memory matrix of our RL agent. <br>
 We save the inverted distance cause we only have one memory matrix and want the closest food to have the most impact.<br>
 This means that if our food is at the same position as we are (distance = 0) our inverted distance = max view range.<br>
 Due to how matrix multiplication works, this makes it easier while working with a single memory matrix.<br>
-Our second 16 sensors are used to determine if there are any obstacles in the agents vision. <br>
+Our second 8 sensors are used to determine if there are any obstacles in the agents vision. <br>
 We also calculate the distance and check how far the obstacle is. <br>
 When the obstacle is far away from our agent, we reward it with a small reward of 0.0001. <br>
 If an obstacle was close to our agent, it is given a penalty of -0.1, and when there is <br>
@@ -276,8 +276,8 @@ green circles represent food within our view, and the green ray represents the n
 	
 The aim of the combat task was the see how well the agent could learn to aim and shoot against a wandering enemy.<br>
 For the combat, tast 2 input nodes were added - this allowed the bot to decide whether to shoot or not. <br>
-Whether or not the bot shoots is dependent on the output of the other sensors and whether the enemy is in sight. <br>
-
+Whether or not the bot shoots is dependent on the output of the other sensors and whether the enemy is in sight.<br>
+	
 <br>
 	
 **Result**
