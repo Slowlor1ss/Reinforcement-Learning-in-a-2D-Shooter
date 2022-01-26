@@ -271,10 +271,13 @@ whether or not the bot shoots is depended on the output of the other sensors and
 ---
 
 I started off testing and experementing with an environment that only has food, and testing the different selection methods on it.<br>
+	
 <br>
-***Testing the different selection methods using a simple problem***
----
+	
+### Testing the different selection methods using a simple problem
+
 <br>
+	
 > #### *Generation 1 Using Stochastic universal sampling*
 <br>
 We can see that in the first generation most agents are clueless of what they're doing, <br>
@@ -285,6 +288,7 @@ but 2 agents seem to figure out that they have move over the food to survive<br>
 </p>
 
 <br>
+	
 > #### *Generation 10 Using Stochastic universal sampling*
 	
 After about 10 generations we can see that most agents seem to have figured out that they need to eat the food,<br>
@@ -297,6 +301,7 @@ For a simple task like this, tournament selection could be a better choice.<br>
 </p>
 	
 <br>
+	
 > #### *Generation 3 Using tournament selection*
 
 We can see that using tournament selection as good as all agents have a general idea of what to do, <br>
@@ -308,6 +313,7 @@ but we can noticably see a decrease in variation of the agents, which is one of 
 </p>
 	
 <br>
+	
 > #### *Generation 10 Using fitness proportionate selection*
 
 And lastly using fitness proportionate selection, we can see that this is a situation where this type of selects lacks compentence<br>
@@ -320,8 +326,9 @@ whether or not it will be good in a situation like this is random.<br>
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/FPSFoodGen10.gif?raw=true" alt="Gen 10 Using FPS" width="50%" height="50%"><br>
 </p>
 
-***Navigation Task Results***
----
+### Navigation Task Results
+
+<br>
 	
 > #### *Generation 1*
 
@@ -340,6 +347,7 @@ in some of the first iterations they even managed to clip trough walls, however 
 </p>
 
 <br>
+	
 > #### *Generation 10*
 
 We can see that after 10 generations most of our agents are still bumping in to lots of walls, <br>
@@ -350,6 +358,7 @@ but we can also see that some agents are starting to get a bit of a sense of the
 </p>
 
 <br>
+	
 > #### *Generation 15*
 
 5 generations later we see some improvement, they are just circeling around anymore but also start to explore different areas of the map, <br>
@@ -360,6 +369,7 @@ but this still isn't very good looking.<br>
 </p>
 	
 <br>
+	
 > #### *Generation 40*
 	
 After 40 generation we can see the agents learnt a new strategy, that includes moving slower in order to hit less walls.<br>
@@ -371,9 +381,11 @@ Still this isn't the best, looking back at it it would have probably been better
 </p>
 	
 <br>
-***Combat Task Results***
----
+	
+### Combat Task Results
+
 <br>
+	
 <p>
 For the combat task I placed all agents in an open area where they are free to move how they like and shoot whenever they want, <br>
 the enemy is trimmed to the size of the map and going out of the map on the once side will result on coming back in on the other side.<br>
@@ -393,8 +405,10 @@ As training 50 agents at once shooting is a bit messy to look at i have also tak
 Here we can see that the agent already learned to shoot at the enemy, only it does not know when to stop shooting <br>
 and when there no enemy nearby it will also start shooting at random.<br>
 
+<p align="center">
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/ShootingOneAgentEarlyGen.gif?raw=true" width="50%" height="50%"><br>
-
+</p>
+	
 After lots of generations we can see that they stop shooting at random all the time and start to shoot more selectively,<br>
 we can also see that theres clearly being aimed at the enemy and it gets hit often.<br>
 
@@ -402,13 +416,13 @@ we can also see that theres clearly being aimed at the enemy and it gets hit oft
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/ShootingAfterManyGens.gif?raw=true" width="50%" height="50%"><br>
 </p>
 
-***Combined Task Results***
----
+### Combined Task Results
+
 <br>
 When combining both tasks we can see that the agents will wander untill they see the enemy, once they spot him they will shoot and approach him.<br>
 While still a large part of the agents miss shots and those that can't find the enemy get a bit clueless at times, <br>
 those that do manage to get the enemy in their view will hit a lare part of thier shots.<br>
-
+<br>
 <p align="center">
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/Combined.gif?raw=true" width="50%" height="50%"><br>
 </p>
@@ -417,6 +431,7 @@ those that do manage to get the enemy in their view will hit a lare part of thie
 	
 ***Conclusion***
 ---
+	
 <p>
 <br>
 The aim of this paper was to see how well I can use RL to learn a bot basic AI behaviours and how well it would preform in a 2d shooter,<br>
