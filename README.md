@@ -208,9 +208,8 @@ Mutation allows GA to avoid falling in to local minima and helps them explore th
 Mutation is done bit by bit, but the mutation rate can change. It can go from 0% to 100%. However, the mutation is typically<br>
 around 1%. Anything much higher, will introduce too much randomness, anything less, and you<br>
 don’t get enough and the sample tends to stagnate. I went with a mutation rate of 1% and amplitude of 3%.<br>
-However, do keep in mind the number is also depended on your q-factors. If you have  high reinforcement numbers then it should be higher;<br>
-if they're lower, it should be lower.<br>
-
+However, do keep in mind the number is also depended on your q-factors. If you have <br>
+high reinforcement numbers then it should be higher ; if they're lower, it should be lower.<br>
 <br>
 
 **Method**
@@ -254,16 +253,16 @@ The first 8 sensors were used to determine if the was food in the view of the bo
 Then the distance to that food object is calculated and inverted, the inverted distance is saved<br>
 in the memory matrix of our RL agent. <br>
 We save the inverted distance cause we only have one memory matrix and want the closest food to have the most impact.<br>
-This means that if our food is at the same position we are (distance = 0) our inverted distance = max view range,<br>
-because of how matrix multiplication work this makes it easier while working with one memory matrix.<br>
-Our second 8 sensors are used to determine if there are any obstacles in the agents vision,<br>
-also for these objects we calculate the distance and then check how far this obstacle is,<br>
-When the obstacle is far away from out agent we reward it with with a small reward of 0.0001.<br>
-If an obstacle was close to our agent we give it a penalty of -0.1, and when theres no<br>
-obstacle in our view then we reward it with 0.001.<br>
-Our agent can accordingly to these parameters choose a direction between -pi and +pi.<br>
-Figure 2 shows a agent with 16 rays, the blue dots represent food and the blue dots with green circles<br>
-represent food within our view, and the green ray represnts the newly chosen direction.<br>
+This means that if our food is at the same position as we are (distance = 0) our inverted distance = max view range.<br>
+Due to how matrix multiplication works, this makes it easier while working with a single memory matrix.<br>
+Our second 16 sensors are used to determine if there are any obstacles in the agents vision. <br>
+We also calculate the distance and check how far the obstacle is. <br>
+When the obstacle is far away from our agent, we reward it with a small reward of 0.0001. <br>
+If an obstacle was close to our agent, it is given a penalty of -0.1, and when there is <br>
+no obstacle in our view then we reward it with 0.001.<br>
+Our agent can accordingly to these parameters choose a direction between -pi and +pi. <br>
+Figure 2 shows an agent with 16 rays - the blue dots represent food, the blue dots with <br>
+green circles represent food within our view, and the green ray represents the newly chosen direction.<br>
 <br>
 <p align="center">
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/viewRange.png?raw=true" width=40% height=40%><br>
@@ -275,16 +274,16 @@ represent food within our view, and the green ray represnts the newly chosen dir
 **Combat Task**
 ---
 	
-The aim of the combat task was to see how well the agent could learn to aim and shoot against a wandering enemy.<br>
-For the combat task 2 input nodes were added, this allows the bot to decide whether or not to shoot,<br>
-whether or not the bot shoots is depended on the output of the other sensors and wheather the enemy is in sight.<br>
+The aim of the combat task was the see how well the agent could learn to aim and shoot against a wandering enemy.<br>
+For the combat, tast 2 input nodes were added - this allowed the bot to decide whether to shoot or not. <br>
+Whether or not the bot shoots is dependent on the output of the other sensors and whether the enemy is in sight. <br>
 
 <br>
 	
 **Result**
 ---
 
-I started off testing and experementing with an environment that only has food, and testing the different selection methods on it.<br>
+I started off testing and experimenting with an environment that only has food, and testing the different selection methods on it.<br>
 	
 <br>
 	
@@ -305,9 +304,9 @@ but 2 agents seem to figure out that they have move over the food to survive<br>
 	
 > #### *Generation 10 Using Stochastic universal sampling*
 	
-After about 10 generations we can see that most agents seem to have figured out that they need to eat the food,<br>
-there was also a large improvement in their ability to survive as long as possible, <br>
-but we can also see that some agents havent quite figured it out yet. <br>
+After about 10 generations we can see that most agents seem to have figured out that they need to eat and<br>
+there was also a large improvement in their ability to survive as long as possible.<br>
+However we can also see that some agents havent quite figured it out yet. <br>
 For a simple task like this, tournament selection could be a better choice.<br>
 	
 <p align="center">
@@ -319,8 +318,8 @@ For a simple task like this, tournament selection could be a better choice.<br>
 > #### *Generation 3 Using tournament selection*
 
 We can see that using tournament selection as good as all agents have a general idea of what to do, <br>
-they are also able to outprform the agents using Stochastic universal sampling,<br>
-but we can noticably see a decrease in variation of the agents, which is one of the reasons its not often used for more complex problems.<br>
+they are also able to outperform the agents using Stochastic universal sampling,<br>
+but we can noticeably see a decrease in variation of the agents, which is one of the reasons it's not often used for more complex problems.<br>
 
 <p align="center">
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/TSFoodGen3.gif?raw=true" alt="Gen 3 Using TS" width="50%" height="50%"><br>
@@ -330,10 +329,10 @@ but we can noticably see a decrease in variation of the agents, which is one of 
 	
 > #### *Generation 10 Using fitness proportionate selection*
 
-And lastly using fitness proportionate selection, we can see that this is a situation where this type of selects lacks compentence<br>
-due to it being too random, as member of the population has a really large fitness in comparison with other members.<br>
-And thus the chances are that this one will not be included in the next generation, preventing it form evolving as quickly as the other methods.<br>
-Note however that this isn't always the case due to it being random it can slo have good performance but <br>
+And lastly using fitness proportionate selection, we can see that this is a situation where this type of selects lacks competence.<br>
+Due to it being too random, as member of the population has a really large fitness in comparison with other members.<br>
+And thus the chances are that this one will not be included in the next generation, preventing it from evolving as quickly as the other methods.<br>
+Note however that this isn't always the case due to it being random it can also have good performance but <br>
 whether or not it will be good in a situation like this is random.<br>
 
 <p align="center">
@@ -346,8 +345,8 @@ whether or not it will be good in a situation like this is random.<br>
 	
 > #### *Generation 1*
 
-In the first few generation we can see that our agents have no clue at all of what they're doing and lots of them are just plainly running in to walls,<br>
-in some of the first iterations they even managed to clip trough walls, however all these agents die as theres nothing behind the walls.<br>
+In the first few generations, we can see that our agents have no clue at all of what they're doing and lots of them are just plainly running into walls.<br>
+In some of the first iterations they even managed to clip through walls, however all these agents die as there's nothing behind the walls.<br>
 
 <p align="center">
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/NavGen1.2.gif?raw=true" width="50%" height="50%"><br>
@@ -364,8 +363,8 @@ in some of the first iterations they even managed to clip trough walls, however 
 	
 > #### *Generation 10*
 
-We can see that after 10 generations most of our agents are still bumping in to lots of walls, <br>
-but we can also see that some agents are starting to get a bit of a sense of their environment<br>
+We can see that after 10 generations most of our agents are still bumping in to lots of walls,<br>
+but we can also see that some agents are starting to get a bit of a sense of their environment.<br>
 
 <p align="center">
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/NavGen10.gif?raw=true" width="50%" height="50%"><br>
@@ -375,8 +374,8 @@ but we can also see that some agents are starting to get a bit of a sense of the
 	
 > #### *Generation 15*
 
-5 generations later we see some improvement, they are just circeling around anymore but also start to explore different areas of the map, <br>
-but this still isn't very good looking.<br>
+5 generations later, we see some improvement. They are not simply circling around anymore, instead they are starting<br>
+to explore various areas of the map, but this still isn't very good-looking.<br>
 
 <p align="center">
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/NavGen15Short.gif?raw=true" width="50%" height="50%"><br>
@@ -386,9 +385,9 @@ but this still isn't very good looking.<br>
 	
 > #### *Generation 40*
 	
-After 40 generation we can see the agents learnt a new strategy, that includes moving slower in order to hit less walls.<br>
+After 40 generations, we can see the agents learnt a new strategy, that includes moving slower in order to hit less walls.<br>
 We can see that some of the agents have come up with a wandering style of exploring the environment while still taking in to account where the walls are.<br>
-Still this isn't the best, looking back at it it would have probably been better to start with an easier to navigate environment or have a clearer goal.<br>
+Still this isn't the best, looking back at it - it would have probably been better to start with an easier-to-navigate environment or have a clearer goal.<br>
 	
 <p align="center">
 <img src="https://github.com/Slowlor1ss/2D-Shooter-MachineLearning/blob/main/source/Media/NavGen40.gif?raw=true" width="50%" height="50%"><br>
@@ -401,11 +400,11 @@ Still this isn't the best, looking back at it it would have probably been better
 <br>
 	
 <p>
-For the combat task I placed all agents in an open area where they are free to move how they like and shoot whenever they want, <br>
-the enemy is trimmed to the size of the map and going out of the map on the once side will result on coming back in on the other side.<br>
-Hitting and enemy will be largely positivly renforced as this does not happen often and missing will be slightly negatively renforced as this happens often.<br>
-Do note that even tho it seems as they can shoot infintly far only hits when the enemy was in the view range are counted as actual hits, <br>
-this is to prvent renforcing hit that happen by sheer luck.<br>
+For the combat task I placed all agents in an open area where they are free to move how they like and shoot whenever they want.<br>
+The enemy is trimmed to the size of the map and going out of the map on the one side will result on coming back in on the other side.<br>
+Hitting and enemy will be largely positively reinforced as this does not happen often and missing will be slightly negatively reinforced as this happens often.<br>
+Do note that even though it seems as they can shoot infinitely far only the hits that are within the view range are counted as actual hits, <br>
+this is to prevent reinforcing hit that happen by sheer luck.<br>
 
 In early generations we can see that some agents are starting to undestand that they should follow the enemy <br>
 and aim at it but they still miss most of their shots.<br>
